@@ -1,4 +1,4 @@
-window.THREE = require('three');
+window.THREE = THREE;
 require('three/examples/js/loaders/GLTFLoader');
 
 const Component = require('./Component');
