@@ -1,26 +1,21 @@
-const Application = require('#/system/Application');
+const Framework = require('#/system/Framework');
+const HallWorld = require('#/worlds/HallWorld');
+const World = require('#/system/World');
 
-//controls
-const FirstPersonController = require('#/controls/FirstPersonController');
+class App{
+    constructor(dom){
+        //初始化框架 与 新建世界
+        const framework = new Framework(dom);
+        const worlds = [new HallWorld(), new World()] ;
+        framework.setWorld(worlds[0]);
 
-//environment
-const SkyBox = require('#/environment/SkyBox');
-const TestBox = require('#/environment/TestBox');
-
-
-class App extends Application{
-    constructor(root){
-        super(root);
-        this.skybox = new SkyBox();
-        this.controller = new FirstPersonController();
-        this.testBox = new TestBox();
-    }
-
-    onCreate(){
-        this.use(this.skybox);
-        this.use(this.controller);
-        this.use(this.testBox);
-        this.setCamera(this.controller.getCamera());
+        //在浏览器的 Console 执行 framework.switch(); 即可执行以下方法
+        framework.export("switch", () => {
+            if(framework.getWorld() === worlds[0])
+                framework.setWorld(worlds[1]);
+            else
+                framework.setWorld(worlds[0]);
+        });
     }
 }
 

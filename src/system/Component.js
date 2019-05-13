@@ -5,14 +5,27 @@ class Component{
         this.$components = [];
     }
 
+    //当组件被创建时执行
     onCreate(){
 
     }
 
+    //当组件被从父组件删除时执行
     onUnmount(){
 
     }
 
+    //当Framework切换到其他世界（非本组件所在世界时）时执行
+    onSuspend(){
+        this.$components.forEach((component) => {component.onSuspend();});
+    }
+
+    //当Framework切换从其他世界（非本组件所在世界时）切换到本组件所在世界时执行
+    onAwake(){
+        this.$components.forEach((component) => {component.onAwake();});
+    }
+
+    //每次渲染都会执行
     onRender(deltaTime){
         this.$components.forEach((component) => {component.onRender(deltaTime);});
     }
@@ -38,7 +51,8 @@ class Component{
     use(component){
         //依赖注入
         if(component instanceof Component){
-            component.$app = this.$app;
+            component.$dom = this.$dom;
+            component.$world = this.$world;
             component.$parent = this;
 
             //调用 onCreate 生命周期

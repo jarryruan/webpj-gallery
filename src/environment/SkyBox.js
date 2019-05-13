@@ -23,7 +23,7 @@ class SkyBox extends Component{
     }
 
     onCreate(){
-        this.$app.scene.background = this.envMap;
+        this.$world.scene.background = this.envMap;
     }
 }
 

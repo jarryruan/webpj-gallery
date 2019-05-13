@@ -20,6 +20,9 @@ class FirstPersonController extends Component{
         //是否激活控制（当用户按下 Esc 键时失去控制）
         this.active = false;
 
+        //该组件是否被挂起
+        this.suspended = false;
+
         //记录哪些键被按下
         this.keyState = {};
 
@@ -38,7 +41,6 @@ class FirstPersonController extends Component{
     }
 
     onCreate(){
-        this.root = this.$app.root;
         this._camera.rotation.set( 0, 0, 0 );
 
         // 视角旋转（竖直方向）
@@ -60,24 +62,39 @@ class FirstPersonController extends Component{
         this.setObject(this.player);
 
         // 加载控制
-        this.root.addEventListener('mousemove', this._onMouseMove.bind(this), false);
+        this.$dom.addEventListener('mousemove', this._onMouseMove.bind(this), false);
         document.addEventListener('keydown', this._onKeyDown.bind(this), false);
         document.addEventListener('keyup', this._onKeyUp.bind(this), false);
         this.setupPointerLockControls();
     }
 
+    onSuspend() {
+        super.onSuspend();
+        this.active = false;
+        this.keyState = {};
+        document.exitPointerLock();
+        this.suspended = true;
+    }
+
+    onAwake() {
+        super.onAwake();
+        this.suspended = false;
+    }
+
     setupPointerLockControls(){
         // 开启鼠标指针锁定
-        if(typeof this.root.requestPointerLock === 'function'){
+        if(typeof this.$dom.requestPointerLock === 'function'){
             //按下鼠标左键时锁定
-            this.root.addEventListener('click', () => {
-                this.active = true;
-                this.root.requestPointerLock();
+            this.$dom.addEventListener('click', () => {
+                if(!this.suspended){
+                    this.active = true;
+                    this.$dom.requestPointerLock();
+                }
             });
 
             //锁定时激活控制
             document.addEventListener('pointerlockchange', () => {
-                if(document.pointerLockElement !== this.root){
+                if(document.pointerLockElement !== this.$dom){
                     this.active = false;
                     this.keyState = {};
                 }
