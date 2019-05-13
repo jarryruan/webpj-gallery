@@ -1,7 +1,8 @@
-window.THREE = THREE;
-require('three/examples/js/loaders/GLTFLoader');
+require('./ThreeExtensions');
+const THREE = window.THREE;
 
 const Component = require('./Component');
+const config = require('#/config');
 
 class Application extends Component{
     constructor(root){
@@ -14,37 +15,43 @@ class Application extends Component{
         const aspect = width / height;
 
         this.root = root;
-        this.object = this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(60, aspect, 1, 1000);
-        this.renderer = new THREE.WebGLRenderer({antialias:true});
-        this.renderer.setSize(width, height);
-        this.renderer.shadowMap.enabled = true;
-        this.root.append(this.renderer.domElement);
+        this.scene = new THREE.Scene();
+        this.setObject(this.scene);
 
-        this.onCreate();
+        this._camera = new THREE.PerspectiveCamera(config.camera.fov, aspect, config.camera.near, config.camera.far);
+        this._renderer = new THREE.WebGLRenderer({antialias:true});
+        this._renderer.setSize(width, height);
+        this._renderer.shadowMap.enabled = true;
+        this.root.append(this._renderer.domElement);
+
         this.running = false;
         window.addEventListener('resize', this.onResize.bind(this));
-
     }
 
     onResize(){
         const width = window.innerWidth;
         const height = window.innerHeight;
-        this.camera.aspect = width / height;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(width, height);
+        this._camera.aspect = width / height;
+        this._camera.updateProjectionMatrix();
+        this._renderer.setSize(width, height);
     }
+
+    setCamera(camera){
+        this._camera = camera;
+    }
+
 
     run(){
         if(!this.running){
             //注册渲染函数
+            this.onCreate();
             requestAnimationFrame((() => {
                 let prevStamp;
                 let render = (timeStamp) => {
                     let deltaTime = prevStamp ? (timeStamp - prevStamp) : 0;
                     this.onRender(deltaTime / 1000.0);
 
-                    this.renderer.render(this.scene, this.camera);
+                    this._renderer.render(this.scene, this._camera);
                     prevStamp = timeStamp;
                     requestAnimationFrame(render);
                 };

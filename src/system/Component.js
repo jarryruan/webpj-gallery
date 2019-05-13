@@ -1,7 +1,8 @@
+const THREE = window.THREE;
+
 class Component{
     constructor(){
         this.$components = [];
-        this.object = new THREE.Group();
     }
 
     onCreate(){
@@ -18,10 +19,19 @@ class Component{
 
     //获取原生 three.js 对象
     getObject(){
-        if(this.object instanceof THREE.Object3D){
-            return this.object
-        }else{
-            return null;
+        if (this._object instanceof THREE.Object3D) {
+            return this._object;
+        }
+        return null;
+    }
+
+    setObject(object){
+        this._object = object;
+    }
+
+    findSubObject(name){
+        if(this.getObject() instanceof THREE.Object3D){
+            return this.getObject().getObjectByName(name);
         }
     }
 
@@ -35,6 +45,10 @@ class Component{
             component.onCreate();
             this.$components.push(component);
 
+            if(this.getObject() instanceof THREE.Object3D && component.getObject() instanceof THREE.Object3D){
+                this.getObject().add(component.getObject());
+            }
+
         }
     }
 
@@ -44,6 +58,10 @@ class Component{
 
         component.onUnmount();
         this.$components = this.$components.filter((cpm) => cpm !== component);
+
+        if(this.getObject() instanceof THREE.Object3D && component.getObject() instanceof THREE.Object3D){
+            this.getObject().remove(component.getObject());
+        }
     }
 }
 

@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
 
 module.exports = {
     mode: 'development',
@@ -19,17 +18,15 @@ module.exports = {
 
     resolve:{
         alias:{
-            'src': path.resolve(__dirname, './src'),
-            'system': path.resolve(__dirname, './src/system')
+            '#': path.resolve(__dirname, './src')
         }
     },
 
     plugins: [
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, "public/index.html")
-        }),
-        new webpack.ProvidePlugin({
-            THREE: 'three'
+            template: path.resolve(__dirname, "public/index.html"),
+            filename: "index.html",
+            favicon: path.resolve(__dirname, "src/assets/favicon.ico")
         })
     ],
     module: {
