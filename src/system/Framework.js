@@ -41,11 +41,13 @@ class Framework{
 
         if(!this._historyWorlds.includes(world)){
             world.$dom = this._dom;
+            world.$framework = this;
             world.onCreate();
             this._historyWorlds.push(world);
+        }else{
+            world.onAwake();
         }
         this._world = world;
-        this._world.onAwake();
     }
 
     export(name, callback){

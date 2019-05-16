@@ -1,20 +1,21 @@
 const Framework = require('#/system/Framework');
 const HallWorld = require('#/worlds/HallWorld');
-const World = require('#/system/World');
+const RoomWorld = require('#/worlds/RoomWorld');
 
 class App{
     constructor(dom){
         //初始化框架 与 新建世界
         const framework = new Framework(dom);
-        const worlds = [new HallWorld(), new World()] ;
-        framework.setWorld(worlds[0]);
+        const worlds = {
+            hall: new HallWorld(),
+            room: new RoomWorld(),
+        };
+        framework.setWorld(worlds['hall']);
 
-        //在浏览器的 Console 执行 framework.switch(); 即可执行以下方法
-        framework.export("switch", () => {
-            if(framework.getWorld() === worlds[0])
-                framework.setWorld(worlds[1]);
-            else
-                framework.setWorld(worlds[0]);
+        //在浏览器的 Console 执行 framework.view('世界名'); 即可执行以下方法
+        framework.export("view", (key) => {
+            if(worlds[key])
+                framework.setWorld(worlds[key]);
         });
     }
 }
