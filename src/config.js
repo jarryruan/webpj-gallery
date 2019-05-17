@@ -8,14 +8,6 @@ module.exports = {
         far: 1000
     },
 
-    player:{
-        horizontalSensitivity: 0.002,
-        verticalSensitivity: 0.002,
-        moveSpeed: 25.0,
-        frictionFactor: 10.0,
-        syncSpeed: 1.0
-    },
-
     server:{
         domain: domain,
         root: 'ws://' + domain + ':3000/'

@@ -66,6 +66,12 @@ class Component{
         }
     }
 
+    useAll(components) {
+        components.forEach((component) => {
+            this.use(component);
+        })
+    }
+
     unmount(component){
         if(!this.$components.includes(component))
             return;
