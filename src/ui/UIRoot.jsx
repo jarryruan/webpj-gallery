@@ -8,7 +8,9 @@ class UIRoot extends React.Component{
         this.state = {
             visible: false
         };
-        UIRoot.instance = this;
+
+        if(!UIRoot.instance)
+            UIRoot.instance = this;
     }
 
     render(){
