@@ -1,0 +1,15 @@
+.root{
+    position: absolute;
+    left: 8rem;
+    top: 4rem;
+    bottom: 4rem;
+    right: 8rem;
+    background-color: rgba(0, 0, 0, 0.3);
+
+    padding: 4rem;
+    border-radius: 10px;
+}
+
+.hidden{
+    display: none;
+}

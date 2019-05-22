@@ -10,6 +10,8 @@ const KeyCodes = {
     A: 65,
     S: 83,
     D: 68,
+    E: 69,
+    Q: 81,
     SPACE: 32
 };
 
@@ -99,6 +101,7 @@ class FirstPersonController extends Component{
                 if(!this.suspended){
                     this.active = true;
                     this.$dom.requestPointerLock();
+                    this.$ui.hide();
                 }
             });
 
@@ -194,7 +197,16 @@ class FirstPersonController extends Component{
 
     _onKeyUp(event){
         if(this.active){
-            this.keyState[event.keyCode] = false;
+            const code = event.keyCode;
+            this.keyState[code] = false;
+
+
+            if(code === KeyCodes.E){
+                this.$ui.show();
+                this.active = false;
+                document.exitPointerLock();
+
+            }
         }
     }
 }

@@ -52,7 +52,10 @@ class Component{
         //依赖注入
         if(component instanceof Component){
             component.$dom = this.$dom;
+            component.$framework = this.$framework;
+            component.$ui = this.$ui;
             component.$world = this.$world;
+
             component.$parent = this;
 
             //调用 onCreate 生命周期
