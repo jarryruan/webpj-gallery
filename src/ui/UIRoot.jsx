@@ -6,7 +6,8 @@ class UIRoot extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            visible: false
+            visible: false,
+            text: ''
         };
 
         if(!UIRoot.instance)
@@ -21,13 +22,17 @@ class UIRoot extends React.Component{
 
         return (
             <div className={classes}>
-                Hello World!
+                {this.state.text}
             </div>
         );
     }
 
-    show(){
-        this.setState({visible: true});
+    show(text){
+        this.setState({
+            visible: true,
+            text
+        });
+
     }
 
     hide(){

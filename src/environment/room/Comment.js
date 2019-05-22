@@ -20,6 +20,10 @@ class Comment extends Component {
         this.setObject(comment);
     }
 
+    getText() {
+        return this.text;
+    }
+
 }
 
 module.exports = Comment;

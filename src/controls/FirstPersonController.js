@@ -12,7 +12,8 @@ const KeyCodes = {
     D: 68,
     E: 69,
     Q: 81,
-    SPACE: 32
+    SPACE: 32,
+    ESC: 27
 };
 
 class FirstPersonController extends Component{
@@ -45,6 +46,12 @@ class FirstPersonController extends Component{
 
         // 人物（摄影机）高度
         this.height = this.config.height;
+
+        // 中间点
+        this.centerPoint = new THREE.Vector2(0, 0);
+
+        // 光线投射
+        this.rayCaster = new THREE.Raycaster();
 
         // 摄像机
         const aspect = window.innerWidth / window.innerHeight;
@@ -118,6 +125,9 @@ class FirstPersonController extends Component{
     onRender(deltaTime){
         super.onRender(deltaTime);
 
+        // 碰撞物体检测
+        this.rayCaster.setFromCamera(this.centerPoint, this.getCamera());
+
         const inAir = this.inAir;
 
         //处理跳跃动作
@@ -171,6 +181,10 @@ class FirstPersonController extends Component{
         return this._camera;
     }
 
+    getRayCaster() {
+        return this.rayCaster;
+    }
+
 // 判断人物是否在空中
     get inAir(){
         // return false;
@@ -201,11 +215,15 @@ class FirstPersonController extends Component{
             this.keyState[code] = false;
 
 
-            if(code === KeyCodes.E){
-                this.$ui.show();
-                this.active = false;
-                document.exitPointerLock();
+            // if(code === KeyCodes.E){
+            //     this.$ui.show();
+            //     this.active = false;
+            //     document.exitPointerLock();
+            //
+            // }
 
+            if (code === KeyCodes.Q) {
+                this.$ui.hide();
             }
         }
     }

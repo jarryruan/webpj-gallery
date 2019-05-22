@@ -27,6 +27,7 @@ class RoomWorld extends World{
             height: 10
         });
 
+
     }
 
     onCreate() {
@@ -43,6 +44,32 @@ class RoomWorld extends World{
         this.useAll(this.comments);
         this.use(this.controller);
         this.setCamera(this.controller.getCamera());
+
+        this.$dom.addEventListener('click', this.commentClick.bind(this));
+    }
+
+    commentClick() {
+        this.comments.forEach((value) => {
+            if (value.selected) {
+                this.$ui.show(value.getText());
+            }
+        })
+    }
+
+    onRender(deltaTime) {
+        super.onRender(deltaTime);
+
+        this.comments.forEach((value) => {
+            let intersect = this.controller.getRayCaster().intersectObject(value.getObject());
+            if (intersect.length > 0) {
+                intersect[0].object.material.color.set(0xff0000);
+                value.selected = true;
+            } else {
+                value.getObject().material.color.set(0xee00ee);
+                value.selected = false;
+            }
+        });
+
     }
 
     setCanvas(url) {

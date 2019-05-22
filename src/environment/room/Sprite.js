@@ -1,7 +1,7 @@
 const THREE = window.THREE;
-const Compoenent = require('#/system/Component');
+const Component = require('#/system/Component');
 
-class Sprite extends Compoenent {
+class Sprite extends Component {
     constructor () {
         super();
         let spriteMaterial = new THREE.SpriteMaterial({color: 0xffffff});
