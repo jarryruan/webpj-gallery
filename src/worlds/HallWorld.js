@@ -16,8 +16,13 @@ class HallWorld extends World{
         this.skyBox = new SkyBox();
         this.controller = new FirstPersonController();
         // this.testBox = new TestBox();
+        // this.floor=new Floor();
+        this.roomCenter1=new RoomCenter();
+
+        this.roomCenter2=new RoomCenter();
+        this.roomCenter3=new RoomCenter();
         this.floor=new Floor();
-        this.roomCenter=new RoomCenter();
+
     }
 
     onCreate() {
@@ -25,8 +30,26 @@ class HallWorld extends World{
         this.use(this.skyBox);
         this.use(this.controller);
         // this.use(this.testBox);
+        // this.use(this.floor);
+        let a=this.roomCenter1.getObject();
+        a.translateZ(-50);
+        a.translateX(87);
+        a.rotation.y=Math.PI/6;
+        this.roomCenter1.setObject(a);
+
+        let b=this.roomCenter2.getObject();
+        b.translateZ(-50);
+        b.translateX(-87);
+        b.rotation.y=-Math.PI/6;
+        this.roomCenter2.setObject(b);
+
+        let c=this.roomCenter3.getObject();
+        c.translateZ(100);
+        this.roomCenter3.setObject(c);
+        this.use(this.roomCenter1);
+        this.use(this.roomCenter2);
+        this.use(this.roomCenter3);
         this.use(this.floor);
-        this.use(this.roomCenter);
         this.setCamera(this.controller.getCamera());
     }
 }
