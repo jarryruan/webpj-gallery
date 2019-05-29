@@ -1,6 +1,6 @@
 const THREE = window.THREE;
 const Component = require("#/system/Component");
-const floorImg = require("#/assets/textures/room/wallpaper.jpg");
+const floorImg = require("#/assets/textures/room/room3.jpg");
 
 const Floor=require('#/environment/hall/Floor');
 const loader = new THREE.TextureLoader();
@@ -8,14 +8,14 @@ const texture = loader.load(floorImg);
 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 // texture.repeat.set(4, 4);
 
-class RoomCenter extends Component{
+class RoomThree extends Component{
     constructor(){
         super();
         let geometry = new THREE.BoxGeometry(80, 50, 100);
         let materials = new THREE.MeshBasicMaterial({side:THREE.DoubleSide,map:texture});
         let result = new THREE.Mesh(geometry,materials);
         result.translateY(25);
-        result.translateZ(100);
+        result.translateZ(-240);
         this.setObject(result);
     }
     onCreate() {
@@ -48,4 +48,4 @@ class RoomCenter extends Component{
 //     cube.rotation.y += angle * Math.PI; //-逆时针旋转,+顺时针
 //     return cube;
 // }
-module.exports=RoomCenter;
+module.exports=RoomThree;

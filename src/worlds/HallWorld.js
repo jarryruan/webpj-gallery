@@ -7,8 +7,10 @@ const FirstPersonController = require('#/controls/FirstPersonController');
 const SkyBox = require('#/environment/hall/SkyBox');
 const TestBox = require('#/environment/hall/TestBox');
 const Floor=require('#/environment/hall/Floor');
-const RoomCenter=require('#/environment/hall/RoomCenter');
-
+const RoomOne=require('#/environment/hall/RoomOne');
+const RoomTwo=require('#/environment/hall/RoomTwo');
+const RoomThree=require('#/environment/hall/RoomThree');
+const Guide=require('#/environment/hall/Guide');
 
 class HallWorld extends World{
     constructor(){
@@ -17,12 +19,12 @@ class HallWorld extends World{
         this.controller = new FirstPersonController();
         // this.testBox = new TestBox();
         // this.floor=new Floor();
-        this.roomCenter1=new RoomCenter();
+        this.roomCenter1=new RoomOne();
 
-        this.roomCenter2=new RoomCenter();
-        this.roomCenter3=new RoomCenter();
+        this.roomCenter2=new RoomTwo();
+        this.roomCenter3=new RoomThree();
         this.floor=new Floor();
-
+        this.guide=new Guide();
     }
 
     onCreate() {
@@ -31,21 +33,8 @@ class HallWorld extends World{
         this.use(this.controller);
         // this.use(this.testBox);
         // this.use(this.floor);
-        let a=this.roomCenter1.getObject();
-        a.translateZ(-50);
-        a.translateX(87);
-        a.rotation.y=Math.PI/6;
-        this.roomCenter1.setObject(a);
 
-        let b=this.roomCenter2.getObject();
-        b.translateZ(-50);
-        b.translateX(-87);
-        b.rotation.y=-Math.PI/6;
-        this.roomCenter2.setObject(b);
-
-        let c=this.roomCenter3.getObject();
-        c.translateZ(100);
-        this.roomCenter3.setObject(c);
+        this.use(this.guide);
         this.use(this.roomCenter1);
         this.use(this.roomCenter2);
         this.use(this.roomCenter3);
