@@ -2,8 +2,10 @@ const THREE = window.THREE;
 
 const Component = require('./Component');
 const World = require('./World');
-const UIRoot = require('#/ui/UIRoot');
+const SocketClient = require('#/network/SocketClient');
 
+
+const UIRoot = require('#/ui/UIRoot');
 const React = require('react');
 const ReactDOM = require('react-dom');
 
@@ -16,6 +18,7 @@ class Framework{
         this._ui = <UIRoot />;
         ReactDOM.render(this._ui, document.getElementById("ui"));
         this._ui = UIRoot.instance;
+        this._client = new SocketClient();
 
         this._historyWorlds = [];
         this._renderer = new THREE.WebGLRenderer({antialias:true});
@@ -51,6 +54,7 @@ class Framework{
         if(!this._historyWorlds.includes(world)){
             world.$dom = this._dom;
             world.$framework = this;
+            world.$client = this._client;
             world.$ui = this._ui;
 
             world.onCreate();
