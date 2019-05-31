@@ -214,12 +214,20 @@
             {
                 "userId": 1,
                 "username": "张三",
-                "content": "这幅画画的真棒！"
+                "content": "这幅画画的真棒！",
+                "transform": {
+                    "position": {"x": 0, "y": 0, "z": 0},
+                    "rotation": {"x": 0, "y": 0, "z": 0}
+                }
             },
             {
                 "userId": 2,
                 "username": "李四",
-                "content": "对啊这幅画画的真棒啊！"
+                "content": "对啊这幅画画的真棒啊！",
+                "transform": {
+                    "position": {"x": 0, "y": 0, "z": 0},
+                    "rotation": {"x": 0, "y": 0, "z": 0}
+                }
             }
         ]
     }
@@ -241,7 +249,11 @@
 + 参数： 
     ```JSON
     {
-        "content": "这幅画画的真棒！"
+        "content": "这幅画画的真棒！",
+        "transform": {
+            "position": {"x": 0, "y": 0, "z": 0},
+            "rotation": {"x": 0, "y": 0, "z": 0}
+        }
     }
     ```
 
@@ -267,6 +279,7 @@
 + 数据示例：
     ```JSON
     {
+        "world": "hall / room",
         "position": {
             "x": 0,
             "y": 0,
@@ -288,6 +301,7 @@
 + 数据示例：
     ```JSON
     {
+        "world": "hall / room",
         "content": "这是一条弹幕"
     }
     ```
@@ -303,6 +317,7 @@
     ```JSON
     {
         "socketId": "1",
+        "world": "hall / room",
         "position": {
             "x": 0,
             "y": 0,
@@ -325,6 +340,7 @@
     ```JSON
     {
         "socketId": "1",
+        "world": "hall / room",
         "content": "这是一条弹幕"
     }
     ```
