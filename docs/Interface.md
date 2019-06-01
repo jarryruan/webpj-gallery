@@ -313,7 +313,7 @@
 + 事件名称： `exit`
 + 数据示例：
     ```JSON
-    {"world": "hall / room"}
+    {}
     ```
 
 
@@ -362,7 +362,6 @@
 + 数据示例：
     ```JSON
     {
-        "socketId": "1",
-        "world": "hall / room"
+        "socketId": "1"
     }
     ```
