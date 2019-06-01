@@ -11,14 +11,17 @@ const SkyBox = require('#/environment/room/SkyBox');
 const Floor = require('#/environment/room/Floor');
 const Comment = require('#/environment/room/Comment');
 const Canvas = require('#/environment/room/Canvas');
+const Sprite = require('#/environment/room/Sprite');
 
 class RoomWorld extends World{
-    constructor(){
+    constructor(id){
         super();
+        this.id = id;
         this.skyBox = new SkyBox();
         this.comments = [];
         this.floor = new Floor();
         this.canvas = null;
+        // this.sprite = new Sprite();
         this.controller = new FirstPersonController({
             horizontalSensitivity: 0.002,
             verticalSensitivity: 0.002,
@@ -26,7 +29,7 @@ class RoomWorld extends World{
             frictionFactor: 10.0,
             height: 10
         });
-
+        this.controller.setRoomId(id);
 
     }
 
@@ -37,6 +40,7 @@ class RoomWorld extends World{
         this.canvas = this.setCanvas(initCanvas);
 
         this.use(this.canvas);
+        // this.use(this.sprite);
 
         const comment1 = new Comment("测试评论", 0, 10);
         this.comments.push(comment1);
@@ -51,7 +55,7 @@ class RoomWorld extends World{
     commentClick() {
         this.comments.forEach((value) => {
             if (value.selected) {
-                this.$ui.show(value.getText());
+                this.$ui.show(value.getText(), 'read');
             }
         })
     }

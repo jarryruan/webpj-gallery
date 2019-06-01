@@ -53,6 +53,9 @@ class FirstPersonController extends Component{
         // 光线投射
         this.rayCaster = new THREE.Raycaster();
 
+        // 人物位于的世界
+        this.roomId = 0;
+
         // 摄像机
         const aspect = window.innerWidth / window.innerHeight;
         this._camera = new THREE.PerspectiveCamera(globalConfig.camera.fov, aspect, globalConfig.camera.near, globalConfig.camera.far);
@@ -177,6 +180,10 @@ class FirstPersonController extends Component{
         }
     }
 
+    setRoomId(id) {
+        this.roomId = id;
+    }
+
     getCamera() {
         return this._camera;
     }
@@ -221,8 +228,27 @@ class FirstPersonController extends Component{
             //     document.exitPointerLock();
             //
             // }
+            if (code === KeyCodes.E) {
+                let userInfo = Object.assign({}, {username: 'username'}, {
+                    position: {
+                        x: this.getObject().position.x,
+                        y: this.getObject().position.y,
+                        z: this.getObject().position.z
+                    },
+                    rotation: {
+                        x: 0,
+                        y: this.yawObject.rotation.y,
+                        z: 0
+                    },
+                    roomId: this.roomId
+                });
+                this.$ui.show(userInfo, "write");
+                this.active = false;
+                document.exitPointerLock();
+            }
 
             if (code === KeyCodes.Q) {
+                console.log("hide");
                 this.$ui.hide();
             }
         }

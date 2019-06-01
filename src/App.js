@@ -8,7 +8,7 @@ class App{
         const framework = new Framework(dom);
         const worlds = {
             hall: new HallWorld(),
-            room: new RoomWorld(),
+            room: new RoomWorld(1),
         };
         framework.setWorld(worlds['room']);
 
