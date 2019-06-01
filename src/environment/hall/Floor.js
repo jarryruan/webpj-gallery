@@ -1,4 +1,4 @@
-const floorImg = require("#/assets/textures/floor/FloorsCheckerboard_S_Diffuse.jpg");
+const floorImg = require("#/assets/textures/floor/floor1.jpg");
 const THREE = window.THREE;
 const Component = require("#/system/Component");
 
@@ -6,7 +6,7 @@ const loader = new THREE.TextureLoader();
 
 const texture = loader.load(floorImg);
 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-texture.repeat.set(4, 4);
+texture.repeat.set(32,32);
 
 
 class Floor extends Component {
@@ -17,9 +17,9 @@ class Floor extends Component {
             map: texture,
             side: THREE.DoubleSide
         });
-        const floorGeometry = new THREE.PlaneGeometry(500, 500, 5, 5);
+        const floorGeometry = new THREE.PlaneGeometry(1000, 1000, 5, 5);
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-        floor.position.y = 0;
+        floor.translateY(1);
         floor.rotation.x = Math.PI / 2;
         this.setObject(floor);
     }
