@@ -11,7 +11,7 @@ module.exports = {
     player:{
         horizontalSensitivity: 0.002,
         verticalSensitivity: 0.002,
-        moveSpeed: 25.0,
+        moveSpeed: 15.0,
         frictionFactor: 10.0,
         syncSpeed: 1.0
     },

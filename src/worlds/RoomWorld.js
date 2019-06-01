@@ -10,7 +10,7 @@ const SkyBox = require('#/environment/room/SkyBox');
 
 class RoomWorld extends World{
     constructor(){
-        super();
+        super('room');
         this.skyBox = new SkyBox();
         this.controller = new FirstPersonController();
     }

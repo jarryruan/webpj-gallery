@@ -9,6 +9,8 @@ module.exports = {
     },
 
     devServer: {
+        host: "0.0.0.0",
+        disableHostCheck: true,
         contentBase: './dist',
         historyApiFallback: true,
         inline: true,
@@ -44,7 +46,7 @@ module.exports = {
                 loader: "babel-loader"
             },
             {
-                test: /\.(png|jpg|jpeg|glb|gltf)$/,
+                test: /\.(png|jpg|jpeg|glb|gltf|fbx)$/,
                 use: [
                     {
                         loader: 'url-loader',

@@ -24,10 +24,16 @@ class SocketServer{
     onConnection(client){
         console.log(`客户端 ${client.id} 已连接`);
         client.on('disconnect', () => {this.onDisconnect(client)});
+        client.on('move', (data) => {this.onMove(client, data)});
+    }
+
+    onMove(client, data){
+        client.broadcast.emit('move', Object.assign({ socketId: client.id }, data));
     }
 
     onDisconnect(client){
         console.log(`客户端 ${client.id} 已退出`);
+        client.broadcast.emit('exit', { socketId: client.id });
     }
 }
 

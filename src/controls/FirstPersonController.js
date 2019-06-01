@@ -35,11 +35,13 @@ class FirstPersonController extends Component{
         this.mass = 0.6;
 
         // 人物（摄影机）高度
-        this.height = 6.0;
+        this.height = 9.3;
 
         // 摄像机
         const aspect = window.innerWidth / window.innerHeight;
         this._camera = new THREE.PerspectiveCamera(config.camera.fov, aspect, config.camera.near, config.camera.far);
+
+        this.ping = 60;
     }
 
     onCreate(){
@@ -68,6 +70,8 @@ class FirstPersonController extends Component{
         document.addEventListener('keydown', this._onKeyDown.bind(this), false);
         document.addEventListener('keyup', this._onKeyUp.bind(this), false);
         this.setupPointerLockControls();
+
+        setInterval(this.onSync.bind(this), this.ping);
     }
 
     onSuspend() {
@@ -198,6 +202,22 @@ class FirstPersonController extends Component{
 
             }
         }
+    }
+
+    onSync(){
+        this.$client.emit('move', {
+            world: this.$world.name,
+            position: {
+                x: this.getObject().position.x,
+                y: this.getObject().position.y,
+                z: this.getObject().position.z
+            },
+            rotation: {
+                x: 0,
+                y: this.yawObject.rotation.y,
+                z: 0
+            }
+        });
     }
 }
 

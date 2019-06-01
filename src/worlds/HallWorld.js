@@ -10,11 +10,16 @@ const Floor=require('#/environment/hall/Floor');
 const RoomOne=require('#/environment/hall/RoomOne');
 const RoomTwo=require('#/environment/hall/RoomTwo');
 const RoomThree=require('#/environment/hall/RoomThree');
+const Light = require("#/environment/hall/Light");
 const Guide=require('#/environment/hall/Guide');
+const PlayerGroup = require("#/controls/PlayerGroup");
+
+
+const Player = require('#/controls/Player.js');
 
 class HallWorld extends World{
     constructor(){
-        super();
+        super('hall');
         this.skyBox = new SkyBox();
         this.controller = new FirstPersonController();
         // this.testBox = new TestBox();
@@ -25,6 +30,9 @@ class HallWorld extends World{
         this.roomCenter3=new RoomThree();
         this.floor=new Floor();
         this.guide=new Guide();
+        this.playerGroup = new PlayerGroup();
+        this.light = new Light();
+        this.samplePlayer = new Player();
     }
 
     onCreate() {
@@ -39,6 +47,9 @@ class HallWorld extends World{
         this.use(this.roomCenter2);
         this.use(this.roomCenter3);
         this.use(this.floor);
+        this.use(this.playerGroup);
+        this.use(this.samplePlayer);
+        this.use(this.light);
         this.setCamera(this.controller.getCamera());
     }
 }
