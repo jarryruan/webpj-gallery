@@ -1,6 +1,6 @@
 const Component = require('#/system/Component');
 const THREE = window.THREE;
-const config = require('#/config');
+const globalConfig = require('#/config');
 
 const DataSender = require('./DataSender');
 
@@ -14,12 +14,23 @@ const KeyCodes = {
     D: 68,
     E: 69,
     Q: 81,
-    SPACE: 32
+    SPACE: 32,
+    ESC: 27
 };
 
 class FirstPersonController extends Component{
-    constructor(){
+    constructor(config){
         super();
+
+        this.config = Object.assign({
+            horizontalSensitivity: 0.002,
+            verticalSensitivity: 0.002,
+            moveSpeed: 15.0,
+            frictionFactor: 10.0,
+            height: 6.0
+            
+        }, config);
+
 
         //是否激活控制（当用户按下 Esc 键时失去控制）
         this.active = false;
@@ -37,11 +48,20 @@ class FirstPersonController extends Component{
         this.mass = 0.6;
 
         // 人物（摄影机）高度
-        this.height = 9.3;
+        this.height = this.config.height;
+
+        // 中间点
+        this.centerPoint = new THREE.Vector2(0, 0);
+
+        // 光线投射
+        this.rayCaster = new THREE.Raycaster();
+
+        // 人物位于的世界
+        this.roomId = 0;
 
         // 摄像机
         const aspect = window.innerWidth / window.innerHeight;
-        this._camera = new THREE.PerspectiveCamera(config.camera.fov, aspect, config.camera.near, config.camera.far);
+        this._camera = new THREE.PerspectiveCamera(globalConfig.camera.fov, aspect, globalConfig.camera.near, globalConfig.camera.far);
     }
 
     onCreate(){
@@ -56,6 +76,7 @@ class FirstPersonController extends Component{
         //视角旋转（水平方向）
         this.yawObject = new THREE.Object3D();
         this.yawObject.add( this.pitchObject );
+        this.yawObject.position.y = this.height;
         
         //整个 Player 对象
         this.player = new THREE.Group();
@@ -112,6 +133,9 @@ class FirstPersonController extends Component{
     onRender(deltaTime){
         super.onRender(deltaTime);
 
+        // 碰撞物体检测
+        this.rayCaster.setFromCamera(this.centerPoint, this.getCamera());
+
         const inAir = this.inAir;
 
         //处理跳跃动作
@@ -137,12 +161,12 @@ class FirstPersonController extends Component{
 
         // 把方向乘以移动速度
         if(direction.length() > 0){
-            groundVelocity.copy(direction.normalize().multiplyScalar(deltaTime * config.player.moveSpeed));
+            groundVelocity.copy(direction.normalize().multiplyScalar(deltaTime * this.config.moveSpeed));
         }
 
         //处理水平方向的阻力
         if(groundVelocity.length() > 0)
-            groundVelocity.lerp(new THREE.Vector3(), config.player.frictionFactor * this.mass * deltaTime);
+            groundVelocity.lerp(new THREE.Vector3(), this.config.frictionFactor * this.mass * deltaTime);
 
         //处理竖直方向的重力
         if(inAir)
@@ -161,8 +185,16 @@ class FirstPersonController extends Component{
         }
     }
 
+    setRoomId(id) {
+        this.roomId = id;
+    }
+
     getCamera() {
         return this._camera;
+    }
+
+    getRayCaster() {
+        return this.rayCaster;
     }
 
 // 判断人物是否在空中
@@ -176,8 +208,8 @@ class FirstPersonController extends Component{
             let movementX = event.movementX || 0;
             let movementY = event.movementY || 0;
 
-            this.yawObject.rotation.y -= movementX * config.player.horizontalSensitivity;
-            this.pitchObject.rotation.x -= movementY * config.player.verticalSensitivity;
+            this.yawObject.rotation.y -= movementX * this.config.horizontalSensitivity;
+            this.pitchObject.rotation.x -= movementY * this.config.verticalSensitivity;
 
             this.pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, this.pitchObject.rotation.x ));
         }
@@ -195,11 +227,34 @@ class FirstPersonController extends Component{
             this.keyState[code] = false;
 
 
-            if(code === KeyCodes.E){
-                this.$ui.show();
+            // if(code === KeyCodes.E){
+            //     this.$ui.show();
+            //     this.active = false;
+            //     document.exitPointerLock();
+            //
+            // }
+            if (code === KeyCodes.E) {
+                let userInfo = Object.assign({}, {username: 'username'}, {
+                    position: {
+                        x: this.getObject().position.x,
+                        y: this.getObject().position.y,
+                        z: this.getObject().position.z
+                    },
+                    rotation: {
+                        x: 0,
+                        y: this.yawObject.rotation.y,
+                        z: 0
+                    },
+                    roomId: this.roomId
+                });
+                this.$ui.show(userInfo, "write");
                 this.active = false;
                 document.exitPointerLock();
+            }
 
+            if (code === KeyCodes.Q) {
+                console.log("hide");
+                this.$ui.hide();
             }
         }
     }
