@@ -13,9 +13,11 @@ const Comment = require('#/environment/room/Comment');
 const Canvas = require('#/environment/room/Canvas');
 const Sprite = require('#/environment/room/Sprite');
 
+const CommentSender = require('#/controls/CommentSender');
+
 class RoomWorld extends World{
     constructor(id){
-        super();
+        super('room');
         this.id = id;
         this.skyBox = new SkyBox();
         this.comments = [];
@@ -29,8 +31,6 @@ class RoomWorld extends World{
             frictionFactor: 10.0,
             height: 10
         });
-        this.controller.setRoomId(id);
-
     }
 
     onCreate() {
@@ -50,6 +50,7 @@ class RoomWorld extends World{
         this.setCamera(this.controller.getCamera());
 
         this.$dom.addEventListener('click', this.commentClick.bind(this));
+        this.controller.use(new CommentSender());
     }
 
     commentClick() {

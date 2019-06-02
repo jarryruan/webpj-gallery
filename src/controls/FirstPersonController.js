@@ -1,9 +1,6 @@
 const Component = require('#/system/Component');
 const THREE = window.THREE;
 const globalConfig = require('#/config');
-
-const DataSender = require('./DataSender');
-
 const PI_2 = Math.PI / 2;
 const gravity = 9.8;
 
@@ -22,15 +19,7 @@ class FirstPersonController extends Component{
     constructor(config){
         super();
 
-        this.config = Object.assign({
-            horizontalSensitivity: 0.002,
-            verticalSensitivity: 0.002,
-            moveSpeed: 15.0,
-            frictionFactor: 10.0,
-            height: 6.0
-            
-        }, config);
-
+        this.config = Object.assign({}, globalConfig.player, config);
 
         //是否激活控制（当用户按下 Esc 键时失去控制）
         this.active = false;
@@ -56,9 +45,6 @@ class FirstPersonController extends Component{
         // 光线投射
         this.rayCaster = new THREE.Raycaster();
 
-        // 人物位于的世界
-        this.roomId = 0;
-
         // 摄像机
         const aspect = window.innerWidth / window.innerHeight;
         this._camera = new THREE.PerspectiveCamera(globalConfig.camera.fov, aspect, globalConfig.camera.near, globalConfig.camera.far);
@@ -83,15 +69,13 @@ class FirstPersonController extends Component{
         this.player.add(this.yawObject);
         //人物出生在空中
         this.player.position.y = 9;
-        
-        this.use(new DataSender());
 
         this.setObject(this.player);
 
         // 加载控制
-        this.$dom.addEventListener('mousemove', this._onMouseMove.bind(this), false);
-        document.addEventListener('keydown', this._onKeyDown.bind(this), false);
-        document.addEventListener('keyup', this._onKeyUp.bind(this), false);
+        this.$world.addEventListener('mousemove', this._onMouseMove.bind(this));
+        this.$world.addEventListener('keydown', this._onKeyDown.bind(this), document);
+        this.$world.addEventListener('keyup', this._onKeyUp.bind(this), document);
         this.setupPointerLockControls();
     }
 
@@ -162,6 +146,7 @@ class FirstPersonController extends Component{
         // 把方向乘以移动速度
         if(direction.length() > 0){
             groundVelocity.copy(direction.normalize().multiplyScalar(deltaTime * this.config.moveSpeed));
+            console.log(this.config.moveSpeed);
         }
 
         //处理水平方向的阻力
@@ -183,10 +168,6 @@ class FirstPersonController extends Component{
         if(this.velocity.length() > 0){
             this.player.position.add(this.velocity);
         }
-    }
-
-    setRoomId(id) {
-        this.roomId = id;
     }
 
     getCamera() {
@@ -225,33 +206,7 @@ class FirstPersonController extends Component{
         if(this.active){
             const code = event.keyCode;
             this.keyState[code] = false;
-
-
-            // if(code === KeyCodes.E){
-            //     this.$ui.show();
-            //     this.active = false;
-            //     document.exitPointerLock();
-            //
-            // }
-            if (code === KeyCodes.E) {
-                let userInfo = Object.assign({}, {username: 'username'}, {
-                    position: {
-                        x: this.getObject().position.x,
-                        y: this.getObject().position.y,
-                        z: this.getObject().position.z
-                    },
-                    rotation: {
-                        x: 0,
-                        y: this.yawObject.rotation.y,
-                        z: 0
-                    },
-                    roomId: this.roomId
-                });
-                this.$ui.show(userInfo, "write");
-                this.active = false;
-                document.exitPointerLock();
-            }
-
+            
             if (code === KeyCodes.Q) {
                 console.log("hide");
                 this.$ui.hide();

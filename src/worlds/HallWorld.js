@@ -14,6 +14,8 @@ const Light = require("#/environment/hall/Light");
 const Guide=require('#/environment/hall/Guide');
 const PlayerGroup = require("#/controls/PlayerGroup");
 
+const DataSender = require("#/controls/DataSender.js");
+
 
 const Player = require('#/controls/Player.js');
 
@@ -26,10 +28,11 @@ class HallWorld extends World{
         // this.floor=new Floor();
         this.roomCenter1=new RoomOne();
 
-        this.roomCenter2=new RoomTwo();
-        this.roomCenter3=new RoomThree();
-        this.floor=new Floor();
-        this.guide=new Guide();
+        this.roomCenter2 = new RoomTwo();
+        this.roomCenter3 = new RoomThree();
+        this.floor = new Floor();
+        this.guide = new Guide();
+        
         this.playerGroup = new PlayerGroup();
         this.light = new Light();
         this.samplePlayer = new Player();
@@ -38,7 +41,9 @@ class HallWorld extends World{
     onCreate() {
         super.onCreate();
         this.use(this.skyBox);
+        
         this.use(this.controller);
+        this.controller.use(new DataSender());
         // this.use(this.testBox);
         // this.use(this.floor);
 

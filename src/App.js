@@ -10,7 +10,7 @@ class App{
             hall: new HallWorld(),
             room: new RoomWorld(1),
         };
-        framework.setWorld(worlds['room']);
+        framework.setWorld(worlds['hall']);
 
         //在浏览器的 Console 执行 framework.view('世界名'); 即可执行以下方法
         framework.export("view", (key) => {
