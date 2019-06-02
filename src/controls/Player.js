@@ -75,9 +75,13 @@ class Player extends Component{
         
     }
 
-    sync(position, rotation){
+    moveTo(position, rotation){
         this.target.position.set(position.x, position.y, position.z);
         this.target.rotation.set(rotation.x, rotation.y, rotation.z);
+    }
+    
+    showBarrage(message){
+        
     }
 }
 

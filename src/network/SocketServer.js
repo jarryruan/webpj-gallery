@@ -24,11 +24,12 @@ class SocketServer{
     onConnection(client){
         console.log(`客户端 ${client.id} 已连接`);
         client.on('disconnect', () => {this.onDisconnect(client)});
-        client.on('move', (data) => {this.onMove(client, data)});
+        client.on('move', (data) => {this.broadcast('move', client, data)});
+        client.on('barrage', (data) => {this.broadcast('barrage', client, data)});
     }
 
-    onMove(client, data){
-        client.broadcast.emit('move', Object.assign({ socketId: client.id }, data));
+    broadcast(eventName, client, data){
+        client.broadcast.emit(eventName, Object.assign({ socketId: client.id }, data));
     }
 
     onDisconnect(client){

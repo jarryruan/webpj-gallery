@@ -2,6 +2,8 @@ const Component = require('#/system/Component');
 const THREE = window.THREE;
 const config = require('#/config');
 
+const DataSender = require('./DataSender');
+
 const PI_2 = Math.PI / 2;
 const gravity = 9.8;
 
@@ -40,8 +42,6 @@ class FirstPersonController extends Component{
         // 摄像机
         const aspect = window.innerWidth / window.innerHeight;
         this._camera = new THREE.PerspectiveCamera(config.camera.fov, aspect, config.camera.near, config.camera.far);
-
-        this.ping = 60;
     }
 
     onCreate(){
@@ -62,6 +62,8 @@ class FirstPersonController extends Component{
         this.player.add(this.yawObject);
         //人物出生在空中
         this.player.position.y = 9;
+        
+        this.use(new DataSender());
 
         this.setObject(this.player);
 
@@ -70,8 +72,6 @@ class FirstPersonController extends Component{
         document.addEventListener('keydown', this._onKeyDown.bind(this), false);
         document.addEventListener('keyup', this._onKeyUp.bind(this), false);
         this.setupPointerLockControls();
-
-        setInterval(this.onSync.bind(this), this.ping);
     }
 
     onSuspend() {
@@ -204,21 +204,7 @@ class FirstPersonController extends Component{
         }
     }
 
-    onSync(){
-        this.$client.emit('move', {
-            world: this.$world.name,
-            position: {
-                x: this.getObject().position.x,
-                y: this.getObject().position.y,
-                z: this.getObject().position.z
-            },
-            rotation: {
-                x: 0,
-                y: this.yawObject.rotation.y,
-                z: 0
-            }
-        });
-    }
+    
 }
 
 
