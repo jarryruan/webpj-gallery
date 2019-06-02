@@ -18,6 +18,7 @@ class Framework{
         this._ui = <UIRoot />;
         ReactDOM.render(this._ui, document.getElementById("ui"));
         this._ui = UIRoot.instance;
+        this._ui.$framework = this;
         this._client = new SocketClient();
 
         this._historyWorlds = [];

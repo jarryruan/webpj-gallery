@@ -1,17 +1,54 @@
-.root{
+.root {
     position: absolute;
     left: 8rem;
     top: 4rem;
     bottom: 4rem;
     right: 8rem;
-    background-color: rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    margin: 7rem auto;
 
-    padding: 2rem;
     border-radius: 4px;
 }
 
 .hidden{
     display: none;
+}
+
+.no-top {
+    top: initial;
+}
+
+.no-bottom {
+    bottom: initial;
+}
+
+/*---- super code ----*/
+
+.content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.content > h1 {
+    color: #fffef9;
+    background-color: #35333c;
+    vertical-align: center;
+    padding: 0.5rem 1rem;
+}
+
+.content h2 {
+    color: #fffef9;
+    padding: 1rem 3rem 0 3rem;
+}
+
+.content > div {
+    width: 98%;
+    padding: 1%;
+    background-color: #47484c;
+}
+
+.backgroundBlack {
+    background-color: #47484c;
 }
 
 .autofill {
@@ -36,28 +73,63 @@
     justify-content: space-between;
 }
 
+.flex.end {
+    justify-content: flex-end;
+}
+
+.flex-autofill {
+    flex: 1;
+}
+
 .white {
-    color: white;
+    color: #fffef9;
+}
+
+.comment {
+    margin: 2rem 3rem;
+    text-align: center;
+
+}
+
+textarea {
+    margin: 0.5rem auto;
+    min-width: 300px;
+    width: 100%;
+    width: -webkit-fill-available;
+    height: 100px;
+    border-radius: 2px;
+    border: 1px solid #eee;
+
+    font-family: "sans-serif";
+    font-size: 1.2rem;
+    line-height: 1.7rem;
+    letter-spacing: 1px;
+}
+
+input {
+    margin: 0.5rem auto;
+    min-width: 300px;
+    width: 100%;
+    width: -webkit-fill-available;
+    border-radius: 2px;
+    border: 1px solid #eee;
+
+    font-family: "sans-serif";
+    font-size: 1.2rem;
+    line-height: 1.7rem;
+    letter-spacing: 1px;
 }
 
 form {
     margin: 0 auto;
     width: 80%;
     padding: 1rem;
+    margin-bottom: 1rem;
 }
 
-textarea {
-    margin: 0.5rem auto;
-    border: 1px solid #ccc;
-    min-width: 300px;
+form > div:last-child {
     width: 100%;
-    height: 100px;
-    border-radius: 2px;
-
-    font-family: "Microsoft JhengHei UI";
-    font-size: 1.2rem;
-    line-height: 1.7rem;
-    letter-spacing: 1px;
+    min-height: 3rem;
 }
 
 h1 {
@@ -67,9 +139,16 @@ h1 {
     letter-spacing: 2px;
 }
 
+h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    line-height: 2.5rem;
+    letter-spacing: 1px;
+}
+
 ul, p {
-    font-size: 1.5rem;
-    margin: 1rem 0;
+    font-size: 1.2rem;
+    margin: 0.2rem 0 0.5rem 0;
 }
 
 ul li {
@@ -82,7 +161,7 @@ ul li {
     padding: 0.5rem 1rem;
     min-width: 4rem;
     margin: 1rem 0;
-    background-color: #6babff;
+    background-color: #4ca7f5;
     color: #fff;
     float: right;
     border: none;

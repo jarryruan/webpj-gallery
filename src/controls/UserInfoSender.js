@@ -1,11 +1,11 @@
 const Component = require('#/system/Component');
 
 const KeyCodes = {
-    E: 69,
-    
+    P: 80,
+
 };
 
-class CommentSender extends Component{
+class UserInfoSender extends Component{
     onCreate(){
         super.onCreate();
 
@@ -15,7 +15,7 @@ class CommentSender extends Component{
     _onKeyUp(event) {
         const code = event.keyCode;
 
-        if (code === KeyCodes.E) {
+        if (code === KeyCodes.P) {
             let userInfo = Object.assign({}, {username: 'username'}, {
                 position: {
                     x: this.$parent.getObject().position.x,
@@ -29,12 +29,12 @@ class CommentSender extends Component{
                 },
                 roomId: this.$world.id
             });
-            this.$ui.show(userInfo, "write");
+            this.$ui.show(userInfo, "user");
             this.$parent.active = false;
             document.exitPointerLock();
         }
     }
-    
+
 }
 
-module.exports = CommentSender;
+module.exports = UserInfoSender;

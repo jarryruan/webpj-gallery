@@ -11,9 +11,13 @@ const SkyBox = require('#/environment/room/SkyBox');
 const Floor = require('#/environment/room/Floor');
 const Comment = require('#/environment/room/Comment');
 const Canvas = require('#/environment/room/Canvas');
-const Sprite = require('#/environment/room/Sprite');
+const PlayerGroup = require("#/controls/PlayerGroup");
 
+const Light = require("#/environment/hall/Light");
+const DataSender = require('#/controls/DataSender');
 const CommentSender = require('#/controls/CommentSender');
+const BarrageSender = require('#/controls/BarrageSender');
+const UserInfoSender = require('#/controls/UserInfoSender');
 
 class RoomWorld extends World{
     constructor(id){
@@ -23,40 +27,48 @@ class RoomWorld extends World{
         this.comments = [];
         this.floor = new Floor();
         this.canvas = null;
-        // this.sprite = new Sprite();
-        this.controller = new FirstPersonController({
-            horizontalSensitivity: 0.002,
-            verticalSensitivity: 0.002,
-            moveSpeed: 50.0,
-            frictionFactor: 10.0,
-            height: 10
-        });
+        this.playerGroup = new PlayerGroup();
+        this.controller = new FirstPersonController();
     }
 
     onCreate() {
         super.onCreate();
-        this.use(this.skyBox);
-        this.use(this.floor);
         this.canvas = this.setCanvas(initCanvas);
-
-        this.use(this.canvas);
-        // this.use(this.sprite);
-
-        const comment1 = new Comment("测试评论", 0, 10);
+        const comment1 = new Comment({
+            "userId": 1,
+            "username": "黑桐谷歌",
+            "content": "居然是讯息",
+            "transform": {
+                "position": {"x": 0, "y": 0, "z": -10},
+                "rotation": {"x": 0, "y": 2, "z": 0}
+            }
+        });
         this.comments.push(comment1);
 
-        this.useAll(this.comments);
+        this.use(new Light());
+        this.use(this.skyBox);
+        this.use(this.floor);
+        this.use(this.canvas);
         this.use(this.controller);
-        this.setCamera(this.controller.getCamera());
-
-        this.$dom.addEventListener('click', this.commentClick.bind(this));
+        this.use(this.playerGroup);
+        this.controller.use(new DataSender());
         this.controller.use(new CommentSender());
+        this.controller.use(new BarrageSender());
+        this.controller.use(new UserInfoSender());
+        this.useAll(this.comments);
+
+        this.setCamera(this.controller.getCamera());
+        this.$dom.addEventListener('click', this.commentClick.bind(this));
     }
 
     commentClick() {
         this.comments.forEach((value) => {
             if (value.selected) {
-                this.$ui.show(value.getText(), 'read');
+                let commentInfo = Object.assign({}, {
+                    username: value.getUsername(),
+                    text: value.getText()
+                });
+                this.$ui.show(commentInfo, 'read');
             }
         })
     }
