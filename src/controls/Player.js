@@ -1,7 +1,8 @@
 const Component = require('#/system/Component');
 const THREE = window.THREE;
-const loader = new THREE.FBXLoader();
 const config = require('#/config');
+
+const Bubble = require('./Bubble');
 
 
 const urls = {
@@ -27,6 +28,10 @@ class Player extends Component{
             rotation: new THREE.Vector3()
         };
         
+        const bubble = this.bubble = new Bubble();
+        this.use(bubble);
+        bubble.setVisible(false);
+        bubble.getObject().position.y = 12;
     }
 
     meshHandler(mesh){
@@ -80,8 +85,10 @@ class Player extends Component{
         this.target.rotation.set(rotation.x, rotation.y, rotation.z);
     }
     
-    showBarrage(message){
-        
+    showBarrage(message, timeout = 5000){
+        this.bubble.setText(message);
+        this.bubble.setVisible(true);
+        setTimeout(() => {this.bubble.setVisible(false)}, timeout);
     }
 }
 

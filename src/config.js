@@ -13,7 +13,7 @@ module.exports = {
         verticalSensitivity: 0.002,
         moveSpeed: 15.0,
         frictionFactor: 10.0,
-        height: 5.0
+        height: 4.5
     },
 
     server:{

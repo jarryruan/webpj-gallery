@@ -146,7 +146,6 @@ class FirstPersonController extends Component{
         // 把方向乘以移动速度
         if(direction.length() > 0){
             groundVelocity.copy(direction.normalize().multiplyScalar(deltaTime * this.config.moveSpeed));
-            console.log(this.config.moveSpeed);
         }
 
         //处理水平方向的阻力
