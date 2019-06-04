@@ -1,3 +1,4 @@
+require('../../../lib/threebsp');
 const THREE = window.THREE;
 const Component = require("#/system/Component");
 const floorImg = require("#/assets/textures/room/room3.jpg");
@@ -9,6 +10,7 @@ texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 // texture.repeat.set(4, 4);
 const Wall=require('#/environment/hall/Wall');
 const Roof=require('#/environment/hall/Roof');
+const DoorFrame=require('#/environment/hall/DoorFrame');
 
 class RoomThree extends Component {
     constructor() {
@@ -65,6 +67,12 @@ class RoomThree extends Component {
         bb = resultBSP.toMesh();
         bb.material = materials;
 
+        this.doorFrame=new DoorFrame();
+        let d=this.doorFrame.getObject();
+        d.translateZ(-180);
+        this.doorFrame.setObject(d);
+
+
         this.wall2.setObject(bb);
 
 
@@ -77,6 +85,7 @@ class RoomThree extends Component {
         this.use(this.wall3);
         this.use(this.wall4);
         this.use(this.roof);
+        this.use(this.doorFrame);
     }
 }
 module.exports=RoomThree;
