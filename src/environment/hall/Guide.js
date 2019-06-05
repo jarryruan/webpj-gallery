@@ -3,7 +3,6 @@ const Component = require("#/system/Component");
 
 
 const floorImg = require("#/assets/textures/room/wood.jpeg");
-
 const Floor=require('#/environment/hall/Floor');
 const loader = new THREE.TextureLoader();
 const texture = loader.load(floorImg);
@@ -22,7 +21,14 @@ class Guide extends Component{
         cylinder.translateY(6);
         this.setObject(cylinder);
 
-        this.text1=new Text();
+        // this.text1=new Text();
+        // let text1=this.text1.getObject();
+        // console.log(text1);
+        // text1.translateY(10);
+        // text1.translateX(4);
+        // text1.translateZ(2);
+        // text1.rotation.y=-Math.PI/6;
+        // this.text1.setObject(text1);
     }
 
     onCreate() {

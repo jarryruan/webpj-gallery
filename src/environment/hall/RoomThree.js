@@ -3,14 +3,17 @@ const THREE = window.THREE;
 const Component = require("#/system/Component");
 const floorImg = require("#/assets/textures/room/room3.jpg");
 
-const Floor=require('#/environment/hall/Floor');
+const Floor = require('#/environment/hall/Floor');
 const loader = new THREE.TextureLoader();
 const texture = loader.load(floorImg);
 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 // texture.repeat.set(4, 4);
-const Wall=require('#/environment/hall/Wall');
-const Roof=require('#/environment/hall/Roof');
-const DoorFrame=require('#/environment/hall/DoorFrame');
+const Wall = require('#/environment/hall/Wall');
+const Roof = require('#/environment/hall/Roof');
+const DoorFrame = require('#/environment/hall/DoorFrame');
+const Painting = require('#/environment/hall/Painting');
+const PaintingFrame=require('#/environment/hall/PaintingFrame');
+const getPainting = require("./GetPainting");
 
 class RoomThree extends Component {
     constructor() {
@@ -25,20 +28,26 @@ class RoomThree extends Component {
         this.wall3 = new Wall();
         this.wall4 = new Wall();
 
+        this.paintings = [];
+        this.paintingFrames = [];
         this.roof = new Roof();
+        this.doorFrame = new DoorFrame();
 
+        this.addRoof(materials);
 
-        let roof = this.roof.getObject();
-        roof.translateY(-220);
-        roof.translateZ(-50);
-        roof.material = materials;
-        this.roof.setObject(roof);
+        this.addWall(materials);
 
+        this.addDoor(materials);
 
+        this.addPainting();
+    }
+
+    addWall(materials) {
         let aa = this.wall1.getObject();
         aa.translateZ(-260);
         aa.material = materials;
         this.wall1.setObject(aa);
+
         let a = this.wall3.getObject();
         a.rotation.y = Math.PI / 2;
         // a.translateX();
@@ -46,13 +55,17 @@ class RoomThree extends Component {
         a.translateX(220);
         a.material = materials;
         this.wall3.setObject(a);
+
         let b = this.wall4.getObject();
         b.rotation.y = Math.PI / 2;
         b.translateZ(-40);
         b.translateX(220);
         b.material = materials;
         this.wall4.setObject(b);
+    }
 
+    addDoor(materials) {
+        //带门的墙
         let bb = this.wall2.getObject();
         bb.translateZ(-180);
         bb.material = materials;
@@ -67,15 +80,72 @@ class RoomThree extends Component {
         bb = resultBSP.toMesh();
         bb.material = materials;
 
-        this.doorFrame=new DoorFrame();
-        let d=this.doorFrame.getObject();
+//门框
+        let d = this.doorFrame.getObject();
         d.translateZ(-180);
         this.doorFrame.setObject(d);
-
-
         this.wall2.setObject(bb);
 
+    }
 
+    addRoof(materials) {
+        let roof = this.roof.getObject();
+        roof.translateY(-220);
+        roof.translateZ(-50);
+        roof.material = materials;
+        this.roof.setObject(roof);
+    }
+
+    addPainting() {
+        let paints = [];
+        let paintFrames=[];
+        for (let i = 0; i < 11; i++) {
+            this.paintings[i] = new Painting();
+            this.paintingFrames[i]=new PaintingFrame();
+            paints[i] = this.paintings[i].getObject();
+            paintFrames[i]=this.paintingFrames[i].getObject();
+        }
+        paints[0].translateZ(-181);
+        paints[0].translateX(-20);
+
+        paints[1].translateZ(-181);
+        paints[1].translateX(20);
+        paintFrames[0].translateZ(-181);
+        paintFrames[0].translateX(-20);
+
+        paintFrames[1].translateZ(-181);
+        paintFrames[1].translateX(20);
+
+        for (let i = 2; i < 5; i++) {
+            paints[i].rotation.y = Math.PI / 2;
+            paints[i].translateX(180 + 8.75 * (i - 1) + 15 * (i - 3 / 2));
+            paints[i].translateZ(39)
+            paintFrames[i].rotation.y = Math.PI / 2;
+            paintFrames[i].translateX(180 + 8.75 * (i - 1) + 15 * (i - 3 / 2));
+            paintFrames[i].translateZ(39)
+        }
+        for (let i = 5; i < 8; i++) {
+            paints[i].translateZ(-259);
+            paintFrames[i].translateZ(-259);
+            // paints[i].translateX(40-8.75*(i-4)-15*(i-3/2));
+        }
+        paints[5].translateX(25);
+        paints[7].translateX(-25);
+
+        paintFrames[5].translateX(25);
+        paintFrames[7].translateX(-25);
+        for (let i = 8; i < 11; i++) {
+            paints[i].rotation.y = Math.PI / 2;
+            paints[i].translateZ(-39);
+            paints[i].translateX(260 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
+            paintFrames[i].rotation.y = Math.PI / 2;
+            paintFrames[i].translateZ(-39);
+            paintFrames[i].translateX(260 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
+        }
+        for (let i = 0; i < 11; i++) {
+            this.paintings[i].setObject(paints[i]);
+            this.paintingFrames[i].setObject(paintFrames[i]);
+        }
     }
 
     onCreate() {
@@ -86,6 +156,12 @@ class RoomThree extends Component {
         this.use(this.wall4);
         this.use(this.roof);
         this.use(this.doorFrame);
+        for (let i = 0; i < 11; i++) {
+            this.use(this.paintings[i]);
+            this.use(this.paintingFrames[i]);
+        }
+
     }
 }
-module.exports=RoomThree;
+
+module.exports = RoomThree;

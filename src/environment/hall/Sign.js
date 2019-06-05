@@ -18,8 +18,6 @@ class Sign extends Component{
     }
     onCreate() {
         super.onCreate();
-        let text=new Text();
-        this.use(text);
     }
 }
 module.exports=Sign;
