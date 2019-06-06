@@ -1,9 +1,9 @@
 .root {
     position: absolute;
-    left: 8rem;
-    top: 4rem;
-    bottom: 4rem;
-    right: 8rem;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
     max-width: 800px;
     margin: 7rem auto;
 
@@ -20,6 +20,12 @@
 
 .no-bottom {
     bottom: initial;
+}
+
+.fill-width {
+    max-width: initial;
+    width: 100vw;
+    margin: 0;
 }
 
 /*---- super code ----*/

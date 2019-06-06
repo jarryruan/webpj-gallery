@@ -3,11 +3,16 @@ const axios = require('axios');
 
 const styles = require('./css/UIRoot.css');
 
+const Login = require('./Login');
+const Signup = require('./Signup');
+
 const PartType = {
     PERSON_INFO: "user",
     SPEAK: "speak",
     W_COMMENT: "write",
     R_COMMENT: "read",
+    LOGIN: 'login',
+    SIGN_UP: 'signup'
 };
 
 const KeyCodes = {
@@ -36,14 +41,14 @@ class UIRoot extends React.Component{
         let ui = document.querySelector("#ui");
         ui.addEventListener('keydown', (e) => {
             if (e.keyCode === KeyCodes.ENTER) {
-                if (e.target.id == "barrageInput")
+                if (e.target.id === "barrageInput")
                     e.preventDefault();
             }
         });
         ui.addEventListener('keyup', (e) => {
             if (e.keyCode === KeyCodes.ENTER) {
                 // 保证只有 input 输入才调用 handleSpeak()
-                if (e.target.id == "barrageInput")
+                if (e.target.id === "barrageInput")
                     this.handleSpeak(e)
             }
         });
@@ -77,6 +82,11 @@ class UIRoot extends React.Component{
             this.setState({
                 visible: true,
                 userInfo: info,
+                partId
+            });
+        } else if (partId === PartType.LOGIN || partId === PartType.SIGN_UP) {
+            this.setState({
+                visible: true,
                 partId
             });
         } else {
@@ -210,6 +220,17 @@ class UIRoot extends React.Component{
                     </div>
                 </div>
             );
+        }
+        else if (this.state.partId === PartType.LOGIN) {
+            return (
+                <Login className={classes + ` ${styles['fill-width']}`} />
+            );
+        }
+        else if (this.state.partId === PartType.SIGN_UP) {
+            return (<Signup className={classes + ` ${styles['fill-width']}`} />);
+        }
+        else {
+            return (<div className={classes}>partId error</div>);
         }
     }
 }

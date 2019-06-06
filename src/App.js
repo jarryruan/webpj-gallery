@@ -17,6 +17,8 @@ class App{
             if(worlds[key])
                 framework.setWorld(worlds[key]);
         });
+
+        framework._ui.show({}, 'login');
     }
 }
 
