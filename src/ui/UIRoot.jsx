@@ -223,11 +223,11 @@ class UIRoot extends React.Component{
         }
         else if (this.state.partId === PartType.LOGIN) {
             return (
-                <Login className={classes + ` ${styles['fill-width']}`} />
+                <Login className={classes + ` ${styles['fill-width']}`} UIShow={this.show.bind(this)} />
             );
         }
         else if (this.state.partId === PartType.SIGN_UP) {
-            return (<Signup className={classes + ` ${styles['fill-width']}`} />);
+            return (<Signup className={classes + ` ${styles['fill-width']}`} UIShow={this.show.bind(this)} />);
         }
         else {
             return (<div className={classes}>partId error</div>);

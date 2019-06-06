@@ -34,7 +34,7 @@
     height: calc(100% - 80px);
     display: flex;
     min-width: 300px;
-    width: 30vw;
+    width: 27vw;
     flex-direction: column;
     justify-content: space-evenly;
 }
