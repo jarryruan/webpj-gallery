@@ -12,8 +12,10 @@ class Sign extends Component{
         super();
         let sign=new THREE.BoxGeometry(9,2,0.3);
 
-        let materials = new THREE.MeshBasicMaterial({side:THREE.DoubleSide,map:texture});
+        let materials = new THREE.MeshPhongMaterial({side:THREE.DoubleSide,map:texture});
         let result = new THREE.Mesh(sign,materials);
+        result.castShadow = true;
+
         this.setObject(result);
     }
     onCreate() {

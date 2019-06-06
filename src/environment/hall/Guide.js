@@ -14,12 +14,19 @@ const Text=require('#/environment/hall/Text');
 class Guide extends Component{
     constructor(){
         super();
+        const light = new THREE.PointLight(0xdd992d, 4, 50);
+        light.position.y = 35;
+        light.position.x = -10;
+        light.castShadow = true;
+
         var geometry = new THREE.CylinderGeometry( 0.6, 0.6, 30, 32 );
-        var material = new THREE.MeshBasicMaterial( {color: 0x2a3b00} );
+        var material = new THREE.MeshPhongMaterial( {color: 0x2a3b00} );
         var cylinder = new THREE.Mesh( geometry, material );
         cylinder.translateZ(-120);
         cylinder.translateY(6);
         this.setObject(cylinder);
+        cylinder.add(light);
+        cylinder.castShadow = true;
 
         // this.text1=new Text();
         // let text1=this.text1.getObject();

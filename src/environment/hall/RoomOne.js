@@ -3,7 +3,7 @@ const THREE = window.THREE;
 const Component = require("#/system/Component");
 const floorImg = require("#/assets/textures/room/wallpaper.jpg");
 
-const Floor = require('#/environment/hall/Floor');
+
 const loader = new THREE.TextureLoader();
 const texture = loader.load(floorImg);
 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -17,8 +17,9 @@ const PaintingFrame=require('#/environment/hall/PaintingFrame');
 class RoomOne extends Component {
     constructor() {
         super();
+        
         let frontWall = new THREE.BoxGeometry(0, 0, 0);
-        let materials = new THREE.MeshBasicMaterial({map: texture});
+        let materials = new THREE.MeshPhongMaterial({map: texture});
         let result1 = new THREE.Mesh(frontWall, materials);
 
 
@@ -167,6 +168,10 @@ class RoomOne extends Component {
             this.use(this.paintings[i]);
             this.use(this.paintingFrames[i]);
         }
+
+        const spotLight = new THREE.SpotLight(0xffffff, 1.0);
+        spotLight.position.y = 10.0;
+        this.getObject().add(spotLight);
     }
 
 
