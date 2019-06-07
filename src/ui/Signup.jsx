@@ -84,13 +84,13 @@ class Signup extends React.Component {
                 if (resp.status === 200) {
                     let response = resp.data;
                     if (response.result) {
-                        this.props.message('success', response.message);
+                        window.message.success(response.message);
                         this.props.UIShow({}, 'login');
                     } else {
-                        this.props.message('error', response.message);
+                        window.message.error(response.message);
                     }
                 } else {
-                    this.props.message('error', resp.status);
+                    window.message.error(resp.status);
                 }
             });
         }

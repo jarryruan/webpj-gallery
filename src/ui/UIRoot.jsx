@@ -33,14 +33,11 @@ class UIRoot extends React.Component{
             barrage: ""
         };
 
-        this.messageId = -1;
-
         if(!UIRoot.instance)
             UIRoot.instance = this;
 
         this.handleWriteComment = this.handleWriteComment.bind(this);
         this.handleSpeak = this.handleSpeak.bind(this);
-        this.message = this.message.bind(this);
 
         let ui = document.querySelector("#ui");
         ui.addEventListener('keydown', (e) => {
@@ -56,11 +53,6 @@ class UIRoot extends React.Component{
                     this.handleSpeak(e)
             }
         });
-    }
-
-    message(type, message) {
-        window.message.ButterToast.dismiss(this.messageId);
-        this.messageId = window.message[type](message);
     }
 
     show(info, partId){
@@ -241,8 +233,6 @@ class UIRoot extends React.Component{
                     <Login className={classes + ` ${styles['fill-width']}`}
                            UIShow={this.show.bind(this)}
                            UIHide={this.hide.bind(this)}
-                           messageId={this.messageId}
-                           message={this.message}
                     />
                 </div>
 
@@ -257,8 +247,6 @@ class UIRoot extends React.Component{
                         className={require('./css/ButterToast.css').shadow}
                     />
                     <Signup className={classes + ` ${styles['fill-width']}`} UIShow={this.show.bind(this)}
-                            messageId={this.messageId}
-                            message={this.message}
                     />
                 </div>);
         }

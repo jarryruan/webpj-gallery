@@ -13,6 +13,7 @@ const Comment = require('#/environment/room/Comment');
 const Canvas = require('#/environment/room/Canvas');
 const PlayerGroup = require("#/controls/PlayerGroup");
 
+const config = require('#/config');
 const Light = require("#/environment/hall/Light");
 const DataSender = require('#/controls/DataSender');
 const CommentSender = require('#/controls/CommentSender');
@@ -43,7 +44,22 @@ class RoomWorld extends World{
                 "rotation": {"x": 0, "y": 2, "z": 0}
             }
         });
-        this.comments.push(comment1);
+
+        // get comments from server
+        config.axiosInstance.get(`/api/paintings/${this.id}/comments`)
+            .then((resp) => {
+                if (resp.status === 200) {
+                    let response = resp.data;
+                    if (response.result) {
+                        this.comments = response.comments.map((value) => (new Comment(value)));
+                        this.comments.push(comment1);
+                        this.useAll(this.comments);
+
+                    } else window.message.error(response.message);
+                } else window.message.error("加载评论失败");
+            }).catch((error) => {
+                window.message.error(error);
+            });
 
         this.use(new Light());
         this.use(this.skyBox);
@@ -55,7 +71,6 @@ class RoomWorld extends World{
         this.controller.use(new CommentSender());
         this.controller.use(new BarrageSender());
         this.controller.use(new UserInfoSender());
-        this.useAll(this.comments);
 
         this.setCamera(this.controller.getCamera());
         this.$dom.addEventListener('click', this.commentClick.bind(this));

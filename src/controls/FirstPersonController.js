@@ -209,7 +209,6 @@ class FirstPersonController extends Component{
             this.keyState[code] = false;
             
             if (code === KeyCodes.Q) {
-                console.log("hide");
                 this.$ui.hide();
             }
         }

@@ -24,7 +24,7 @@ module.exports = {
 
     axiosInstance: axios.create({
         baseURL: "/server",
-        timeout: 1000,
+        timeout: 3000,
         headers: {'X-Requested-With':'XMLHttpRequest'},
     })
     // api: "188.131.187.85:9999"
