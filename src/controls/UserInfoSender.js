@@ -1,4 +1,6 @@
 const Component = require('#/system/Component');
+const axios = require('axios');
+const config = require('#/config');
 
 const KeyCodes = {
     P: 80,
@@ -16,22 +18,33 @@ class UserInfoSender extends Component{
         const code = event.keyCode;
 
         if (code === KeyCodes.P) {
-            let userInfo = Object.assign({}, {username: 'username'}, {
-                position: {
-                    x: this.$parent.getObject().position.x,
-                    y: this.$parent.getObject().position.y,
-                    z: this.$parent.getObject().position.z
-                },
-                rotation: {
-                    x: 0,
-                    y: this.$parent.yawObject.rotation.y,
-                    z: 0
-                },
-                roomId: this.$world.id
-            });
-            this.$ui.show(userInfo, "user");
-            this.$parent.active = false;
-            document.exitPointerLock();
+
+            config.axiosInstance.get("/api/users/self")
+                .then((resp) => {
+                    if (resp.status === 200) {
+                        let response = resp.data;
+                        if (response.result) {
+                            let userInfo = Object.assign({}, {username: response.user.username}, {
+                                position: {
+                                    x: this.$parent.getObject().position.x,
+                                    y: this.$parent.getObject().position.y,
+                                    z: this.$parent.getObject().position.z
+                                },
+                                rotation: {
+                                    x: 0,
+                                    y: this.$parent.yawObject.rotation.y,
+                                    z: 0
+                                },
+                                roomId: this.$world.id
+                            });
+                            this.$ui.show(userInfo, "user");
+                            this.$parent.active = false;
+                            document.exitPointerLock();
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                });
         }
     }
 

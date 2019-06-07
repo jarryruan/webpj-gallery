@@ -1,5 +1,6 @@
 const React = require("react");
 
+const config = require("#/config");
 const loginStyles = require('./css/Login.css');
 
 class Login extends React.Component {
@@ -37,25 +38,57 @@ class Login extends React.Component {
                         message: Object.assign(this.state.message, {
                             [key]: "密码为空"
                         })
-                    })
+                    });
                     return false;
                 }
                 this.setState({
                     message: Object.assign(this.state.message, {
                         [key]: ""
                     })
-                })
+                });
                 return true;
             }
-        }
+        };
 
         this.handleLogin = this.handleLogin.bind(this);
         this.linkToSignUp = this.linkToSignUp.bind(this);
+        this.checkSession();
+    }
+
+    checkSession() {
+        config.axiosInstance.get("/api/users/self")
+            .then((resp) => {
+                if (resp.status === 200) {
+                    let response = resp.data;
+                    if (response.result) {
+                        this.props.message('success', "登录成功");
+                        this.props.UIHide();
+                    }
+                } else this.props.message('error', resp.status)
+            })
     }
 
     handleLogin() {
         let pass = Object.keys(this.rules).every((key) => (this.rules[key](key)));
-        if (pass) console.log(this.state.form);
+        if (pass) {
+            console.log(this.state.form);
+            config.axiosInstance.post(
+                "/api/users/self", {
+                    username: this.state.form.username,
+                    password: this.state.form.password
+                }
+            ).then((resp) => {
+                if (resp.status === 200) {
+                    let response = resp.data;
+                    if (response.result) {
+                        this.props.message('success', response.message);
+                        this.props.UIHide();
+                    } else {
+                        this.props.message('error', response.message);
+                    }
+                } else this.props.message('error', resp.status);
+            });
+        }
     }
 
     linkToSignUp() {

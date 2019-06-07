@@ -1,7 +1,7 @@
 const React = require("react");
 
 const Anima = require('./Anima');
-
+const config = require("#/config");
 const signupStyles = require('./css/Signup.css');
 
 class Signup extends React.Component {
@@ -15,7 +15,7 @@ class Signup extends React.Component {
                 passwordAgain: ""
             },
             message: {},
-        }
+        };
         this.rules = {
             username: (key) => {
                 if (this.state.form.username === undefined || this.state.form.username === "") {
@@ -65,7 +65,7 @@ class Signup extends React.Component {
                 });
                 return true;
             }
-        }
+        };
 
         this.handleSignUp = this.handleSignUp.bind(this);
     }
@@ -73,7 +73,27 @@ class Signup extends React.Component {
     handleSignUp() {
         // 多次连续 setState() 只会调用最后一次的 setState()
         let pass = Object.keys(this.rules).every((key) => (this.rules[key](key)));
-        if (pass) console.log(this.state.form);
+        if (pass) {
+            console.log(this.state.form);
+            config.axiosInstance.post(
+                "/api/users", {
+                    username: this.state.form.username,
+                    password: this.state.form.password
+                }
+            ).then((resp) => {
+                if (resp.status === 200) {
+                    let response = resp.data;
+                    if (response.result) {
+                        this.props.message('success', response.message);
+                        this.props.UIShow({}, 'login');
+                    } else {
+                        this.props.message('error', response.message);
+                    }
+                } else {
+                    this.props.message('error', resp.status);
+                }
+            });
+        }
     }
 
     onChange(key, event){
@@ -87,6 +107,7 @@ class Signup extends React.Component {
     render () {
         return (
             <div className={this.props.className + ` ${signupStyles.back}`}>
+
                 <Anima />
                 <div className={signupStyles.right}>
                     <div className={signupStyles.form}>

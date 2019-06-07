@@ -1,5 +1,6 @@
 const React = require('react');
 const axios = require('axios');
+require('./message');
 
 const styles = require('./css/UIRoot.css');
 
@@ -32,11 +33,14 @@ class UIRoot extends React.Component{
             barrage: ""
         };
 
+        this.messageId = -1;
+
         if(!UIRoot.instance)
             UIRoot.instance = this;
 
         this.handleWriteComment = this.handleWriteComment.bind(this);
         this.handleSpeak = this.handleSpeak.bind(this);
+        this.message = this.message.bind(this);
 
         let ui = document.querySelector("#ui");
         ui.addEventListener('keydown', (e) => {
@@ -52,6 +56,11 @@ class UIRoot extends React.Component{
                     this.handleSpeak(e)
             }
         });
+    }
+
+    message(type, message) {
+        window.message.ButterToast.dismiss(this.messageId);
+        this.messageId = window.message[type](message);
     }
 
     show(info, partId){
@@ -223,11 +232,35 @@ class UIRoot extends React.Component{
         }
         else if (this.state.partId === PartType.LOGIN) {
             return (
-                <Login className={classes + ` ${styles['fill-width']}`} UIShow={this.show.bind(this)} />
+                <div>
+                    <window.message.ButterToast
+                        position={{vertical: window.message.POS_TOP, horizontal: window.message.POS_CENTER}}
+                        timeout={3000}
+                        className={require('./css/ButterToast.css').shadow}
+                    />
+                    <Login className={classes + ` ${styles['fill-width']}`}
+                           UIShow={this.show.bind(this)}
+                           UIHide={this.hide.bind(this)}
+                           messageId={this.messageId}
+                           message={this.message}
+                    />
+                </div>
+
             );
         }
         else if (this.state.partId === PartType.SIGN_UP) {
-            return (<Signup className={classes + ` ${styles['fill-width']}`} UIShow={this.show.bind(this)} />);
+            return (
+                <div>
+                    <window.message.ButterToast
+                        position={{vertical: window.message.POS_TOP, horizontal: window.message.POS_CENTER}}
+                        timeout={3000}
+                        className={require('./css/ButterToast.css').shadow}
+                    />
+                    <Signup className={classes + ` ${styles['fill-width']}`} UIShow={this.show.bind(this)}
+                            messageId={this.messageId}
+                            message={this.message}
+                    />
+                </div>);
         }
         else {
             return (<div className={classes}>partId error</div>);
