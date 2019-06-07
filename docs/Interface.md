@@ -89,6 +89,28 @@
         "msessage": "登录成功"
     }
     ```
+### 用户登出
++ 备注：登出后，会删除在session中的数据
++ URL : `/api/users/logout`
++ 方法: `GET`
+
++ 参数：无
+
+
+ + 返回值
+    ```JSON
+    {
+        "result": true,
+        "msessage": "登出成功"
+    }
+    ``` 
+    如果当前未登录的话
+    ```JSON
+    {
+        "result":false,
+        "msessage": "未登录"
+    }
+    ```    
 
 
 ### 取当前登录的用户
