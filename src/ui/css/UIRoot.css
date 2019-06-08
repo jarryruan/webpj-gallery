@@ -75,6 +75,10 @@
     align-items: center;
 }
 
+.flex.space-evenly {
+    justify-content: space-evenly;
+}
+
 .flex.space-between {
     justify-content: space-between;
 }
@@ -91,10 +95,42 @@
     color: #fffef9;
 }
 
+.data {
+    padding: 2rem;
+}
+
+.data .transform {
+    margin: 2rem;
+    width: calc(100% - 6rem);
+}
+
+.data .room {
+    text-align: center;
+}
+
+.data .login {
+    margin: 1.5rem auto 1rem auto;
+    border: none;
+    height: 2.5rem;
+    width: 40%;
+    border-radius: 2rem;
+    background-color: #218eff;
+    cursor: pointer;
+}
+
+.data .signup {
+    margin: 1rem auto 1.5rem auto;
+    border: none;
+    height: 2.5rem;
+    width: 40%;
+    border-radius: 2rem;
+    background-color: #e83536;
+    cursor: pointer;
+}
+
 .comment {
     margin: 2rem 3rem;
     text-align: center;
-
 }
 
 textarea {

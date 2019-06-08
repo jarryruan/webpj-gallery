@@ -53,6 +53,7 @@ class RoomWorld extends World{
                     if (response.result) {
                         this.comments = response.comments.map((value) => (new Comment(value)));
                         this.comments.push(comment1);
+
                         this.useAll(this.comments);
 
                     } else window.message.error(response.message);
@@ -106,6 +107,12 @@ class RoomWorld extends World{
 
     setCanvas(url) {
         return new Canvas(url);
+    }
+
+    addComment(options) {
+        let comment = new Comment(options);
+        this.comments.push(comment);
+        this.use(comment);
     }
 
 }

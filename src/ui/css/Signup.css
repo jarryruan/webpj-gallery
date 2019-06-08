@@ -16,6 +16,13 @@
     margin: 0 auto 0 4rem;
 }
 
+.login {
+    text-decoration-line: underline;
+    font-size: 17px;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
 .title {
     color: rgb(210, 54, 54);
     font-size: 3.4rem;
