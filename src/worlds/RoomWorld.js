@@ -15,6 +15,8 @@ const Sprite = require('#/environment/room/Sprite');
 
 const CommentSender = require('#/controls/CommentSender');
 
+const Light = require('#/environment/room/Light');
+
 class RoomWorld extends World{
     constructor(id){
         super('room');
@@ -31,15 +33,19 @@ class RoomWorld extends World{
             frictionFactor: 10.0,
             height: 10
         });
+
+        this.light = new Light();
     }
 
     onCreate() {
         super.onCreate();
+        this.use(this.light);
         this.use(this.skyBox);
         this.use(this.floor);
         this.canvas = this.setCanvas(initCanvas);
 
         this.use(this.canvas);
+        this.canvas.getObject().position.set(0, 45, -100);
         // this.use(this.sprite);
 
         const comment1 = new Comment("测试评论", 0, 10);
