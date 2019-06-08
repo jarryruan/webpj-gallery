@@ -68,6 +68,7 @@ class Signup extends React.Component {
         };
 
         this.handleSignUp = this.handleSignUp.bind(this);
+        this.linkToLogin = this.linkToLogin.bind(this);
     }
 
     handleSignUp() {
@@ -96,6 +97,10 @@ class Signup extends React.Component {
         }
     }
 
+    linkToLogin() {
+        this.props.UIShow({}, 'login');
+    }
+
     onChange(key, event){
         this.setState({
             form: Object.assign({}, this.state.form, {
@@ -112,7 +117,7 @@ class Signup extends React.Component {
                 <div className={signupStyles.right}>
                     <div className={signupStyles.form}>
                         <h1 className={signupStyles.title}>虚拟 3D 画展</h1>
-                        <p className={signupStyles.desc}>注册</p>
+                        <p className={signupStyles.desc}><span className={signupStyles.login} onClick={this.linkToLogin}>登录</span></p>
                         <label htmlFor="username">用户名</label>
                         <input type="username" id="username" onChange={this.onChange.bind(this, "username")} />
                         {this.state.message["username"] && this.state.message["username"] !== "" ? 

@@ -1,5 +1,4 @@
 const Component = require('#/system/Component');
-const axios = require('axios');
 const config = require('#/config');
 
 const KeyCodes = {

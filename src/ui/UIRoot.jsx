@@ -1,7 +1,6 @@
 const React = require('react');
-const axios = require('axios');
 require('./message');
-
+const config = require('#/config');
 const styles = require('./css/UIRoot.css');
 
 const Login = require('./Login');
@@ -38,6 +37,7 @@ class UIRoot extends React.Component{
 
         this.handleWriteComment = this.handleWriteComment.bind(this);
         this.handleSpeak = this.handleSpeak.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
 
         let ui = document.querySelector("#ui");
         ui.addEventListener('keydown', (e) => {
@@ -104,12 +104,29 @@ class UIRoot extends React.Component{
         e.preventDefault();
 
         if (this.state.comment !== "") {
-            // TODO
-            // axios.post('/api/paintings/' + this.state.userInfo.roomId + '/comments');
 
-            alert("评论成功: " + this.state.comment);
+            let commentOptions = {
+                content: this.state.comment,
+                transform: {
+                    position: this.state.userInfo.position,
+                    rotation: this.state.userInfo.rotation
+                }
+            };
+
+            config.axiosInstance.post(`/api/paintings/${this.state.userInfo.roomId}/comments`, commentOptions).then((resp) => {
+                console.log(resp);
+                if (resp.status === 200) {
+                    let response = resp.data;
+                    if (response.result) {
+                        commentOptions.username = this.state.userInfo.username;
+                        this.$framework.getWorld().addComment(commentOptions);
+                        window.message.success(response.message);
+                        this.hide();
+                    } else window.message.error(response.message);
+                } else window.message.error(resp.status)
+            });
         } else {
-            alert("评论失败");
+            window.message.error("评论为空");
         }
 
     }
@@ -126,8 +143,25 @@ class UIRoot extends React.Component{
             this.$framework._dom.focus();
 
         } else {
-            alert("发送弹幕失败，没有信息");
+            console.log("123");
+            window.message.error("发送弹幕失败，没有信息");
         }
+    }
+
+    handleLogout(e) {
+        e.preventDefault();
+
+        config.axiosInstance.get("/api/users/logout")
+            .then((resp) => {
+                if (resp.status === 200) {
+                    let response = resp.data;
+                    if (response.result) {
+                        window.message.success(response.message);
+                        this.show({}, 'login');
+
+                    } else window.message.error(response.message);
+                } else window.message.error(resp.status);
+            });
     }
 
     onChange(key, event) {
@@ -136,6 +170,10 @@ class UIRoot extends React.Component{
             [key]: event.target.value
         });
 
+    }
+
+    linkTo(page) {
+        this.show({}, page);
     }
 
     render(){
@@ -147,20 +185,33 @@ class UIRoot extends React.Component{
         if (this.state.partId === PartType.PERSON_INFO) {
             return (
                 <div className={classes + ` ${styles['no-bottom']}`}>
+                    <window.message.ButterToast
+                        position={{vertical: window.message.POS_TOP, horizontal: window.message.POS_CENTER}}
+                        timeout={3000}
+                        className={require('./css/ButterToast.css').shadow}
+                    />
                     <div className={`${styles.content} ${styles.autofill} ${styles.flex} ${styles.vertical}`}>
                         <h1>Nickname: {this.state.userInfo.username}</h1>
-                        <div className={styles.white}>
-                            <ul>Position:
-                                <li>x: {this.state.userInfo.position.x}</li>
-                                <li>y: {this.state.userInfo.position.y}</li>
-                                <li>z: {this.state.userInfo.position.z}</li>
-                            </ul>
-                            <ul>Direction:
-                                <li>x: {this.state.userInfo.rotation.x}</li>
-                                <li>y: {this.state.userInfo.rotation.y}</li>
-                                <li>z: {this.state.userInfo.rotation.z}</li>
-                            </ul>
-                            <p>Room ID: {this.state.userInfo.roomId}</p>
+                        <div className={`${styles.data}  ${styles.white}`}>
+                            <div className={`${styles.flex} ${styles['center']}`}>
+                                <ul className={styles.transform}>Position:
+                                    <li>x: {this.state.userInfo.position.x}</li>
+                                    <li>y: {this.state.userInfo.position.y}</li>
+                                    <li>z: {this.state.userInfo.position.z}</li>
+                                </ul>
+                                <ul className={styles.transform}>Direction:
+                                    <li>x: {this.state.userInfo.rotation.x}</li>
+                                    <li>y: {this.state.userInfo.rotation.y}</li>
+                                    <li>z: {this.state.userInfo.rotation.z}</li>
+                                </ul>
+                            </div>
+
+                            <p className={styles.room}>Room ID: {this.state.userInfo.roomId}</p>
+
+                            <div className={`${styles.flex} ${styles.vertical} ${styles.center}`}>
+                                <input type="submit" className={styles.login} value="登出" onClick={this.handleLogout} />
+                                <input type="submit" className={styles.signup} value="注册" onClick={this.linkTo.bind(this, 'signup')} />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -169,6 +220,11 @@ class UIRoot extends React.Component{
         else if (this.state.partId === PartType.SPEAK) {
             return (
                 <div className={classes + ` ${styles['no-top']}`}>
+                    <window.message.ButterToast
+                        position={{vertical: window.message.POS_TOP, horizontal: window.message.POS_CENTER}}
+                        timeout={3000}
+                        className={require('./css/ButterToast.css').shadow}
+                    />
                     <div className={`${styles.content} ${styles.autofill} ${styles.flex} ${styles.vertical} ${styles.end}`}>
                         <h1>操作界面</h1>
                         <div>
@@ -189,6 +245,11 @@ class UIRoot extends React.Component{
         else if (this.state.partId === PartType.W_COMMENT) {
             return (
                 <div className={classes + ` ${styles['no-top']}`}>
+                    <window.message.ButterToast
+                        position={{vertical: window.message.POS_TOP, horizontal: window.message.POS_CENTER}}
+                        timeout={3000}
+                        className={require('./css/ButterToast.css').shadow}
+                    />
                     <div className={`${styles.content} ${styles.autofill} ${styles.flex} ${styles.vertical} ${styles.end}`}>
 
                         <h1>操作界面</h1>
@@ -213,6 +274,11 @@ class UIRoot extends React.Component{
         else if (this.state.partId === PartType.R_COMMENT) {
             return (
                 <div className={classes + ` ${styles['no-bottom']}`}>
+                    <window.message.ButterToast
+                        position={{vertical: window.message.POS_TOP, horizontal: window.message.POS_CENTER}}
+                        timeout={3000}
+                        className={require('./css/ButterToast.css').shadow}
+                    />
                     <div className={`${styles.content} ${styles.autofill} ${styles.flex} ${styles.vertical}`}>
                         <h1>评论 -- 来自 {this.state.commentInfo.username}</h1>
                         <div>
