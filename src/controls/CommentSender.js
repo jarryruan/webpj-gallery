@@ -9,7 +9,7 @@ class CommentSender extends Component{
     onCreate(){
         super.onCreate();
 
-        this.$world.addEventListener('keyup', this._onKeyUp.bind(this), document);
+        this.$world.addEventListener('keyup', this._onKeyUp.bind(this));
     }
 
     _onKeyUp(event) {
@@ -30,7 +30,7 @@ class CommentSender extends Component{
                 roomId: this.$world.id
             });
             this.$ui.show(userInfo, "write");
-            this.active = false;
+            this.$parent.active = false;
             document.exitPointerLock();
         }
     }

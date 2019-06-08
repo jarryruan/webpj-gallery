@@ -2,10 +2,11 @@ const THREE = window.THREE;
 const Component = require("#/system/Component");
 
 class Comment extends Component {
-    constructor (text, x, y) {
+    constructor (options) {
         super();
 
-        this.text = text;
+        this.text = options.content;
+        this.username = options.username;
 
         const commentMaterial = new THREE.MeshBasicMaterial({
             color: 0xee00ee,
@@ -14,14 +15,19 @@ class Comment extends Component {
         const commentGeometry = new THREE.PlaneGeometry(20, 12, 5, 5);
         const comment = new THREE.Mesh(commentGeometry, commentMaterial);
         comment.position.y = 0.1;
-        comment.position.x = x;
-        comment.position.z = -y;
+        comment.position.x = options.transform.position.x;
+        comment.position.z = options.transform.position.z;
         comment.rotation.x = Math.PI / 2;
+        comment.rotation.z = options.transform.rotation.y;
         this.setObject(comment);
     }
 
     getText() {
         return this.text;
+    }
+
+    getUsername() {
+        return this.username;
     }
 
 }

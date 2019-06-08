@@ -17,6 +17,8 @@ const Guide=require('#/environment/hall/Guide');
 const PlayerGroup = require("#/controls/PlayerGroup");
 
 const DataSender = require("#/controls/DataSender.js");
+const BarrageSender = require('#/controls/BarrageSender');
+
 
 const Player = require('#/controls/Player.js');
 
@@ -49,6 +51,7 @@ class HallWorld extends World{
         this.use(this.controller);
         // this.use(this.building);
         this.controller.use(new DataSender());
+        this.controller.use(new BarrageSender());
         // this.use(this.testBox);
         // this.use(this.floor);
 

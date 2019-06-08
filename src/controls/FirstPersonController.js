@@ -74,8 +74,8 @@ class FirstPersonController extends Component{
 
         // 加载控制
         this.$world.addEventListener('mousemove', this._onMouseMove.bind(this));
-        this.$world.addEventListener('keydown', this._onKeyDown.bind(this), document);
-        this.$world.addEventListener('keyup', this._onKeyUp.bind(this), document);
+        this.$world.addEventListener('keydown', this._onKeyDown.bind(this));
+        this.$world.addEventListener('keyup', this._onKeyUp.bind(this));
         this.setupPointerLockControls();
     }
 
@@ -92,17 +92,19 @@ class FirstPersonController extends Component{
         this.suspended = false;
     }
 
+    lock() {
+        if(!this.suspended){
+            this.active = true;
+            this.$dom.requestPointerLock();
+            this.$ui.hide();
+        }
+    }
+
     setupPointerLockControls(){
         // 开启鼠标指针锁定
         if(typeof this.$dom.requestPointerLock === 'function'){
             //按下鼠标左键时锁定
-            this.$dom.addEventListener('click', () => {
-                if(!this.suspended){
-                    this.active = true;
-                    this.$dom.requestPointerLock();
-                    this.$ui.hide();
-                }
-            });
+            this.$dom.addEventListener('click', this.lock.bind(this));
 
             //锁定时激活控制
             document.addEventListener('pointerlockchange', () => {
@@ -207,7 +209,6 @@ class FirstPersonController extends Component{
             this.keyState[code] = false;
             
             if (code === KeyCodes.Q) {
-                console.log("hide");
                 this.$ui.hide();
             }
         }
