@@ -177,13 +177,13 @@
             {
                 "paintingId": 1,
                 "name": "著名画作",
-                "homeId":1,
+                "houseId":1,
                 "url": "http://path-to-your-painting/"
             },
             {
                 "paintingId": 2,
                 "name": "著名画作1",
-                "homeId":2,
+                "houseId":2,
                 "url": "http://path-to-your-painting/"
             },
         ]
