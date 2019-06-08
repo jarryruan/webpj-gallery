@@ -43,7 +43,8 @@ class Floor extends Component {
 
 
         const wallGeometry = new THREE.CylinderGeometry( 200, 200, 30, 40, 1, true );
-        const wallMaterial = new THREE.MeshPhongMaterial( {color: 0xffffff, transparent: true, opacity: 0.8, side: THREE.DoubleSide} );
+        // const wallMaterial = new THREE.MeshPhongMaterial( {color: 0xffffff, transparent: true, opacity: 0.8, side: THREE.DoubleSide} );
+        const wallMaterial = new THREE.MeshNormalMaterial( {transparent: true, opacity: 0.6, side: THREE.DoubleSide} );
         const wall = new THREE.Mesh( wallGeometry, wallMaterial );
         this.getObject().add(wall);
 

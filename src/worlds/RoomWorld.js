@@ -14,7 +14,6 @@ const Canvas = require('#/environment/room/Canvas');
 const PlayerGroup = require("#/controls/PlayerGroup");
 
 const config = require('#/config');
-const Light = require("#/environment/hall/Light");
 const DataSender = require('#/controls/DataSender');
 const CommentSender = require('#/controls/CommentSender');
 const BarrageSender = require('#/controls/BarrageSender');
@@ -37,9 +36,9 @@ class RoomWorld extends World{
     onCreate() {
         super.onCreate();
 
-        this.use(this.light);
-        
         this.canvas = this.setCanvas(initCanvas);
+        this.canvas.getObject().position.set(0, 45, -100);
+        
         const comment1 = new Comment({
             "userId": 1,
             "username": "黑桐谷歌",

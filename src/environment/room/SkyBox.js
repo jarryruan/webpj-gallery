@@ -1,6 +1,6 @@
 const leftTexture = require('#/assets/textures/skybox/room/panoleft.jpg');
 const rightTexture = require('#/assets/textures/skybox/room/panoright.jpg');
-const topTexture = require('#/assets/textures/skybox/room/panobottom.jpeg');
+const topTexture = require('#/assets/textures/skybox/room/panotop.jpg');
 const bottomTexture = require('#/assets/textures/skybox/room/panobottom.jpeg');
 const backTexture = require('#/assets/textures/skybox/room/panoback.jpg');
 const frontTexture = require('#/assets/textures/skybox/room/panofront.jpg');
