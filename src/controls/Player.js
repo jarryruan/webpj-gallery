@@ -75,7 +75,7 @@ class Player extends Component{
             this.setTimeScale("walking", distance);
         }
 
-        this.getObject().position.lerp(this.target.position, config.player.moveSpeed * deltaTime);
+        this.getObject().position.lerp(this.target.position, 15.0 * deltaTime);
         this.getObject().rotation.set(this.target.rotation.x, this.target.rotation.y, this.target.rotation.z)
         
     }

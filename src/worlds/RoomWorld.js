@@ -31,8 +31,9 @@ class RoomWorld extends World{
         this.comments = [];
         this.floor = new Floor();
         this.canvas = null;
-        this.playerGroup = new PlayerGroup();
+        this.playerGroup = new PlayerGroup(-2);
         this.controller = new FirstPersonController();
+        this.dataSender = new DataSender(-2);
 
         this.NPC = new NPC(1);
         // console.log(this.NPC);
@@ -47,7 +48,7 @@ class RoomWorld extends World{
         this.use(this.controller);
         this.use(this.playerGroup);
 
-        this.controller.use(new DataSender());
+        this.controller.use(this.dataSender);
         this.controller.use(new MovementRestrict());
         this.controller.use(new CommentSender());
         this.controller.use(new BarrageSender());
@@ -93,6 +94,8 @@ class RoomWorld extends World{
         this.use(this.NPC);
         this.NPC.moveTo(new THREE.Vector3(40, 0, -40), new THREE.Vector3(0, Math.PI * 3 / 4, 0));
         this.NPC.getObject().position.set(40, 0, -40);
+        this.dataSender.paintingId = this.options.paintingId;
+        this.playerGroup.paintingId = this.options.paintingId;
     }
 
     setCanvas(url) {

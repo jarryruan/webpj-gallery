@@ -41,6 +41,7 @@ class HallWorld extends World{
         this.roomCenter3=new RoomThree();
         this.floor=new Floor();
         this.guide=new Guide();
+        this.playerGroup = new PlayerGroup(-1);
     }
 
     onCreate() {
@@ -51,7 +52,7 @@ class HallWorld extends World{
         this.use(this.controller);
         this.controller.use(new MovementRestrict());
         // this.use(this.building);
-        this.controller.use(new DataSender());
+        this.controller.use(new DataSender(-1));
         this.controller.use(new BarrageSender());
         this.controller.use(new UserInfoSender());
         // this.use(this.testBox);
