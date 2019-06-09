@@ -6,7 +6,7 @@ const Bubble = require('./Bubble');
 
 
 const urls = {
-    samba: require('#/assets/models/samba.fbx'),
+    samba: require('#/assets/models/Seelle.fbx'),
     running: require('#/assets/models/running.fbx'),
     idle: require('#/assets/models/idle.fbx'),
     walking: require('#/assets/models/walking.fbx')
