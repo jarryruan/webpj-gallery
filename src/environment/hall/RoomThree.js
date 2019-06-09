@@ -15,6 +15,8 @@ const Painting = require('#/environment/hall/Painting');
 const PaintingFrame=require('#/environment/hall/PaintingFrame');
 const getPainting = require("./GetPainting");
 
+const FirstPersonController = require('#/controls/FirstPersonController');
+
 class RoomThree extends Component {
     constructor() {
         super();
@@ -27,6 +29,7 @@ class RoomThree extends Component {
         this.wall2 = new Wall();
         this.wall3 = new Wall();
         this.wall4 = new Wall();
+        this.controller = new FirstPersonController();
 
         this.paintings = [];
         this.paintingFrames = [];
@@ -149,27 +152,23 @@ class RoomThree extends Component {
             paintFrames[i].translateX(40 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
         }
         getPainting.getData(function (res) {
-           console.log(res);
             if (res){
                 let result=JSON.parse(res);
+                console.log(result);
                 let texture = loader.load(result.paintings[0].paintingPath);
                 // let material=new THREE.MeshBasicMaterial({map: texture});
                 paints[0].material.map = texture;
+
+
+                // paints[0].name=result.paintings[0].paintingId;
+                // console.log("id is"+paints[0].name);
             }
         });
         for (let i = 0; i < 11; i++) {
             this.paintings[i].setObject(paints[i]);
+            console.log(paints[i].id);
             this.paintingFrames[i].setObject(paintFrames[i]);
         }
-
-        // getPainting.getData(function (res) {
-        //     if (res){
-        //         let result=JSON.parse(res);
-        //         let texture=loader.load(result.paintings[0].url);
-        //         let material=new THREE.MeshBasicMaterial({map:material});
-        //
-        //     }
-        // })
 
     }
 
@@ -187,6 +186,42 @@ class RoomThree extends Component {
         }
 
     }
+    onRender(deltaTime) {
+        super.onRender(deltaTime);
+
+        this.paintings.forEach((value) => {
+            let intersect = this.controller.getRayCaster().intersectObject(value.getObject());
+            if (intersect.length > 0) {
+                let id=intersect[0].id;
+                id=(id-130)/4;
+                getPainting.getData(function (res){
+                    if (res){
+                        let result=JSON.parse(res);
+                        let paintings=result.paintings;
+                        let count=0;
+                        for (let i=0;i++;i<paintings.length){
+                            let tmpPainting=paintings[i];
+                            if (tmpPainting.houseId=3){
+                                if(count!=id){
+                                    count++;
+                                }else {
+
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            else {
+                // value.getObject().material.color.set(0xee00ee);
+                // value.selected = false;
+                // console.log("NO");
+            }
+            console.log(intersect);
+        });
+
+    }
+
 }
 
 module.exports = RoomThree;

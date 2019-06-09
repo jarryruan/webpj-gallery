@@ -17,7 +17,7 @@ class RoomTwo extends Component {
     constructor() {
         super();
         let frontWall = new THREE.BoxGeometry(0, 0, 0);
-        let materials = new THREE.MeshPhongMaterial({map: texture});
+        let materials = new THREE.MeshPhongMaterial({side:THREE.DoubleSide,map: texture});
         // let result1 = new THREE.Mesh(frontWall, materials);
 
 
