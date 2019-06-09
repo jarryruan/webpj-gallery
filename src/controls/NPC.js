@@ -65,7 +65,7 @@ class NPC extends Component{
                 if (resp.status === 200) {
                     let response = resp.data;
                     if (response.result) {
-                        console.log(response);
+                        // console.log(response);
                         let len = response.instruction.length;
                         let i = 0;
                         setInterval(() => {
