@@ -87,6 +87,12 @@ class Component{
             this.getObject().remove(component.getObject());
         }
     }
+
+    unmountAll(components) {
+        components.forEach((component) => {
+            this.unmount(component);
+        })
+    }
 }
 
 

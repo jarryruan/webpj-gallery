@@ -8,14 +8,20 @@ class App{
         const framework = new Framework(dom);
         const worlds = {
             hall: new HallWorld(),
-            room: new RoomWorld(1),
+            room: new RoomWorld(),
         };
-        framework.setWorld(worlds['hall']);
+        framework.setWorld(worlds['room']);
 
         //在浏览器的 Console 执行 framework.view('世界名'); 即可执行以下方法
         framework.export("view", (key) => {
             if(worlds[key])
                 framework.setWorld(worlds[key]);
+        });
+
+        //在浏览器的 Console 执行 framework.openRoom(options); 即可执行以下方法
+        framework.export("openRoom", (options) => {
+            worlds.room.update(options);
+            framework.setWorld(worlds['room']);
         });
 
         framework._ui.show({}, 'login');

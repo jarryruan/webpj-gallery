@@ -6,7 +6,7 @@
     right: 0;
     max-width: 800px;
     margin: 7rem auto;
-
+    z-index: 2;
     border-radius: 4px;
 }
 

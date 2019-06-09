@@ -19,7 +19,7 @@ const PlayerGroup = require("#/controls/PlayerGroup");
 
 const DataSender = require("#/controls/DataSender.js");
 const BarrageSender = require('#/controls/BarrageSender');
-
+const UserInfoSender = require('#/controls/UserInfoSender');
 
 const Player = require('#/controls/Player.js');
 
@@ -55,6 +55,7 @@ class HallWorld extends World{
         // this.use(this.building);
         this.controller.use(new DataSender());
         this.controller.use(new BarrageSender());
+        this.controller.use(new UserInfoSender());
         // this.use(this.testBox);
         // this.use(this.floor);
 

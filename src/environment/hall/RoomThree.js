@@ -13,10 +13,10 @@ const Roof = require('#/environment/hall/Roof');
 const DoorFrame = require('#/environment/hall/DoorFrame');
 const Painting = require('#/environment/hall/Painting');
 const PaintingFrame=require('#/environment/hall/PaintingFrame');
-const RoomLight=require('#/environment/hall/RoomLight');
-const getPainting = require("./GetPainting");
+const getPainting = require("#/environment/hall/GetPainting");
 
 const FirstPersonController = require('#/controls/FirstPersonController');
+const RoomLight=require('#/environment/hall/RoomLight');
 
 class RoomThree extends Component {
     constructor() {
@@ -47,11 +47,12 @@ class RoomThree extends Component {
 
         this.addPainting();
 
-        let group=new THREE.Group(this.wall1,this.wall2,this.wall3,this.wall4,this.roof,this.doorFrame);
+        let group = new THREE.Group(this.wall1, this.wall2, this.wall3, this.wall4, this.roof, this.doorFrame);
         group.translateZ(-220);
         // group.translateX(-100);
         // group.translateY(25);
         this.setObject(group);
+
     }
 
     addWall(materials) {
@@ -189,41 +190,41 @@ class RoomThree extends Component {
             this.use(this.paintingFrames[i]);
         }
 
+        this.$world.addEventListener('click', this.click.bind(this));
     }
-    onRender(deltaTime) {
-        super.onRender(deltaTime);
 
+    click(){
         this.paintings.forEach((value) => {
-            let intersect = this.controller.getRayCaster().intersectObject(value.getObject());
+            let intersect = this.$world.controller.getRayCaster().intersectObject(value.getObject());
             if (intersect.length > 0) {
-                let id=intersect[0].id;
+                console.log(intersect);
+                let id=intersect[0].object.id;
+                console.log(id);
                 id=(id-130)/4;
                 getPainting.getData(function (res){
+                    console.log(res);
                     if (res){
+                        console.log("nihao");
                         let result=JSON.parse(res);
-                        let paintings=result.paintings;
+                        let allPaintings=result.paintings;
                         let count=0;
-                        for (let i=0;i++;i<paintings.length){
-                            let tmpPainting=paintings[i];
-                            if (tmpPainting.houseId=3){
-                                if(count!=id){
+                        allPaintings.forEach(value1 => {
+                            console.log(value1);
+                            if (value1.houseId===1){
+                                console.log("chenggong");
+                                if (count!==id){
                                     count++;
-                                }else {
-
+                                    console.log(count);
+                                }else{
+                                    let postData=value1;
+                                    framework.openRoom(postData);
                                 }
                             }
-                        }
+                        })
                     }
                 });
             }
-            else {
-                // value.getObject().material.color.set(0xee00ee);
-                // value.selected = false;
-                // console.log("NO");
-            }
-            console.log(intersect);
         });
-
     }
 
 }

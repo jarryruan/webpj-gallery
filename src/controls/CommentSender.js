@@ -33,7 +33,7 @@ class CommentSender extends Component{
                                     y: this.$parent.yawObject.rotation.y,
                                     z: 0
                                 },
-                                roomId: this.$world.id
+                                paintingId: this.$world.options.paintingId
                             });
                             this.$ui.show(userInfo, "write");
                             this.$parent.active = false;
