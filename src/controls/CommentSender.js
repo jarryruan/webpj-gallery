@@ -39,6 +39,7 @@ class CommentSender extends Component{
                             this.$parent.active = false;
                             document.exitPointerLock();
                         } else {
+                            console.log(response);
                             alert(response.message);
                         }
                     }
