@@ -1,7 +1,7 @@
-require('../../../lib/threebsp');
+require('../../assets/lib/threebsp');
 const THREE = window.THREE;
 const Component = require("#/system/Component");
-const floorImg = require("#/assets/textures/room/room3.jpg");
+const floorImg = require("#/assets/textures/room/room1.jpeg");
 
 const Floor = require('#/environment/hall/Floor');
 const loader = new THREE.TextureLoader();
@@ -20,8 +20,8 @@ class RoomThree extends Component {
         super();
         let geometry = new THREE.BoxGeometry(0, 0, 0);
         let materials = new THREE.MeshPhongMaterial({side: THREE.DoubleSide, map: texture});
-        let result = new THREE.Mesh(geometry, materials);
-        this.setObject(result);
+        // let result = new THREE.Mesh(geometry, materials);
+        // this.setObject(result);
 
         this.wall1 = new Wall();
         this.wall2 = new Wall();
@@ -40,11 +40,17 @@ class RoomThree extends Component {
         this.addDoor(materials);
 
         this.addPainting();
+
+        let group=new THREE.Group(this.wall1,this.wall2,this.wall3,this.wall4,this.roof,this.doorFrame);
+        group.translateZ(-220);
+        // group.translateX(-100);
+        // group.translateY(25);
+        this.setObject(group);
     }
 
     addWall(materials) {
         let aa = this.wall1.getObject();
-        aa.translateZ(-260);
+        aa.translateZ(-40);
         aa.material = materials;
         this.wall1.setObject(aa);
 
@@ -52,14 +58,14 @@ class RoomThree extends Component {
         a.rotation.y = Math.PI / 2;
         // a.translateX();
         a.translateZ(40);
-        a.translateX(220);
+        // a.translateX(220);
         a.material = materials;
         this.wall3.setObject(a);
 
         let b = this.wall4.getObject();
         b.rotation.y = Math.PI / 2;
         b.translateZ(-40);
-        b.translateX(220);
+        // b.translateX(220);
         b.material = materials;
         this.wall4.setObject(b);
     }
@@ -67,12 +73,12 @@ class RoomThree extends Component {
     addDoor(materials) {
         //带门的墙
         let bb = this.wall2.getObject();
-        bb.translateZ(-180);
+        bb.translateZ(40);
         bb.material = materials;
         let door = new THREE.BoxGeometry(10, 20, 0);
         let doors = new THREE.Mesh(door);
         // doors.rotation.y=Math.PI/2;
-        doors.translateZ(-180);
+        doors.translateZ(40);
         doors.translateY(10);
         let meshH4Door = new ThreeBSP(doors);
         let meshH4Wall = new ThreeBSP(bb);
@@ -82,7 +88,7 @@ class RoomThree extends Component {
 
 //门框
         let d = this.doorFrame.getObject();
-        d.translateZ(-180);
+        d.translateZ(40);
         this.doorFrame.setObject(d);
         this.wall2.setObject(bb);
 
@@ -90,7 +96,7 @@ class RoomThree extends Component {
 
     addRoof(materials) {
         let roof = this.roof.getObject();
-        roof.translateY(-220);
+        // roof.translateY(-220);
         roof.translateZ(-50);
         roof.material = materials;
         this.roof.setObject(roof);
@@ -105,28 +111,28 @@ class RoomThree extends Component {
             paints[i] = this.paintings[i].getObject();
             paintFrames[i]=this.paintingFrames[i].getObject();
         }
-        paints[0].translateZ(-181);
+        paints[0].translateZ(39);
         paints[0].translateX(-20);
 
-        paints[1].translateZ(-181);
+        paints[1].translateZ(39);
         paints[1].translateX(20);
-        paintFrames[0].translateZ(-181);
+        paintFrames[0].translateZ(39);
         paintFrames[0].translateX(-20);
 
-        paintFrames[1].translateZ(-181);
+        paintFrames[1].translateZ(39);
         paintFrames[1].translateX(20);
 
         for (let i = 2; i < 5; i++) {
             paints[i].rotation.y = Math.PI / 2;
-            paints[i].translateX(180 + 8.75 * (i - 1) + 15 * (i - 3 / 2));
-            paints[i].translateZ(39)
+            paints[i].translateX(-40 + 8.75 * (i - 1) + 15 * (i - 3 / 2));
+            paints[i].translateZ(39);
             paintFrames[i].rotation.y = Math.PI / 2;
-            paintFrames[i].translateX(180 + 8.75 * (i - 1) + 15 * (i - 3 / 2));
+            paintFrames[i].translateX(-40 + 8.75 * (i - 1) + 15 * (i - 3 / 2));
             paintFrames[i].translateZ(39)
         }
         for (let i = 5; i < 8; i++) {
-            paints[i].translateZ(-259);
-            paintFrames[i].translateZ(-259);
+            paints[i].translateZ(-39);
+            paintFrames[i].translateZ(-39);
             // paints[i].translateX(40-8.75*(i-4)-15*(i-3/2));
         }
         paints[5].translateX(25);
@@ -137,15 +143,34 @@ class RoomThree extends Component {
         for (let i = 8; i < 11; i++) {
             paints[i].rotation.y = Math.PI / 2;
             paints[i].translateZ(-39);
-            paints[i].translateX(260 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
+            paints[i].translateX(40 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
             paintFrames[i].rotation.y = Math.PI / 2;
             paintFrames[i].translateZ(-39);
-            paintFrames[i].translateX(260 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
+            paintFrames[i].translateX(40 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
         }
+        getPainting.getData(function (res) {
+           console.log(res);
+            if (res){
+                        let result=JSON.parse(res);
+                        let texture=loader.load(result.paintings[0].url);
+                        let material=new THREE.MeshBasicMaterial({map:material});
+                        paints[0].material=material;
+                    }
+        });
         for (let i = 0; i < 11; i++) {
             this.paintings[i].setObject(paints[i]);
             this.paintingFrames[i].setObject(paintFrames[i]);
         }
+
+        // getPainting.getData(function (res) {
+        //     if (res){
+        //         let result=JSON.parse(res);
+        //         let texture=loader.load(result.paintings[0].url);
+        //         let material=new THREE.MeshBasicMaterial({map:material});
+        //
+        //     }
+        // })
+
     }
 
     onCreate() {

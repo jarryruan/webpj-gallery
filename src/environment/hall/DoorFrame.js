@@ -1,4 +1,4 @@
-require('../../../lib/threebsp');
+require('../../assets/lib/threebsp');
 const THREE = window.THREE;
 const Component = require("#/system/Component");
 

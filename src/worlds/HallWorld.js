@@ -32,15 +32,15 @@ class HallWorld extends World{
         // this.testBox = new TestBox();
         // this.floor=new Floor();
         this.roomCenter1=new RoomOne();
-
-        this.roomCenter2 = new RoomTwo();
-        this.roomCenter3 = new RoomThree();
-        this.floor = new Floor();
-        this.guide = new Guide();
         
-        this.playerGroup = new PlayerGroup();
-        this.light = new Light();
-        this.samplePlayer = new Player();
+        let a=this.roomCenter1.getObject();
+        console.log(a.position);
+        this.roomCenter2=new RoomTwo();
+        let b=this.roomCenter2.getObject();
+        console.log(b.position);
+        this.roomCenter3=new RoomThree();
+        this.floor=new Floor();
+        this.guide=new Guide();
     }
 
     onCreate() {
