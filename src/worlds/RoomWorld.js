@@ -1,10 +1,14 @@
-// const initCanvas = require('#/assets/textures/canvas/canvas-1.jpg');
-
 const THREE = window.THREE;
 const World = require('#/system/World');
+const config = require('#/config');
 
 //controls
 const FirstPersonController = require('#/controls/FirstPersonController');
+const NPC = require('#/controls/NPC');
+const DataSender = require('#/controls/DataSender');
+const CommentSender = require('#/controls/CommentSender');
+const BarrageSender = require('#/controls/BarrageSender');
+const UserInfoSender = require('#/controls/UserInfoSender');
 
 //environment
 const SkyBox = require('#/environment/room/SkyBox');
@@ -13,14 +17,6 @@ const Comment = require('#/environment/room/Comment');
 const Canvas = require('#/environment/room/Canvas');
 const MovementRestrict = require('#/environment/room/MovementRestrict');
 const PlayerGroup = require("#/controls/PlayerGroup");
-const NPC = require('#/controls/NPC');
-
-const config = require('#/config');
-const DataSender = require('#/controls/DataSender');
-const CommentSender = require('#/controls/CommentSender');
-const BarrageSender = require('#/controls/BarrageSender');
-const UserInfoSender = require('#/controls/UserInfoSender');
-
 const Light = require('#/environment/room/Light');
 
 class RoomWorld extends World{
@@ -35,7 +31,6 @@ class RoomWorld extends World{
         this.controller = new FirstPersonController();
 
         this.NPC = new NPC(1);
-        // console.log(this.NPC);
     }
 
     onCreate() {
@@ -86,6 +81,7 @@ class RoomWorld extends World{
     update(options){
         this.options = options;
         this.unmount(this.canvas);
+        this.unmount(this.NPC);
         this.unmountAll(this.comments);
         this.setCanvas(this.options.paintingPath);
         this.getComments();
