@@ -7,7 +7,6 @@ const loader = new THREE.TextureLoader();
 
 const diff = require('#/assets/textures/floor/tiles_diff.jpg');
 const normal = require('#/assets/textures/floor/tiles_normal.jpg');
-const waterNormal = require('#/assets/textures/floor/mud_normal.jpg');
 
 
 const diffMap = loader.load(diff);
@@ -17,11 +16,6 @@ diffMap.repeat.set(12, 12);
 const normalMap = loader.load(normal);
 normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
 normalMap.repeat.set(12, 12);
-
-
-const waterNormalMap = loader.load(waterNormal);
-waterNormalMap.wrapS = waterNormalMap.wrapT = THREE.RepeatWrapping;
-waterNormalMap.repeat.set(12, 12);
 
 class Floor extends Component {
     constructor() {

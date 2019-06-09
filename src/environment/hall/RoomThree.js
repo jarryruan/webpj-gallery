@@ -170,7 +170,6 @@ class RoomThree extends Component {
         });
         for (let i = 0; i < 11; i++) {
             this.paintings[i].setObject(paints[i]);
-            console.log(paints[i].id);
             this.paintingFrames[i].setObject(paintFrames[i]);
         }
 
