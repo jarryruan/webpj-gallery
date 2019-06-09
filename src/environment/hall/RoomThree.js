@@ -217,6 +217,7 @@ class RoomThree extends Component {
                                     console.log(count);
                                 }else{
                                     let postData=value1;
+                                    framework.openRoom(postData);
                                 }
                             }
                         })
