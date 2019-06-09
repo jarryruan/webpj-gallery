@@ -55,6 +55,7 @@ class Component{
             component.$framework = this.$framework;
             component.$ui = this.$ui;
             component.$world = this.$world;
+            component.$client = this.$client;
 
             component.$parent = this;
 
@@ -69,6 +70,12 @@ class Component{
         }
     }
 
+    useAll(components) {
+        components.forEach((component) => {
+            this.use(component);
+        })
+    }
+
     unmount(component){
         if(!this.$components.includes(component))
             return;
@@ -79,6 +86,12 @@ class Component{
         if(this.getObject() instanceof THREE.Object3D && component.getObject() instanceof THREE.Object3D){
             this.getObject().remove(component.getObject());
         }
+    }
+
+    unmountAll(components) {
+        components.forEach((component) => {
+            this.unmount(component);
+        })
     }
 }
 

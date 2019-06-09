@@ -1,0 +1,96 @@
+.back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #252423;
+    font-family: 'Inter UI', sans-serif;
+}
+
+.back > div {
+    flex: 1;
+}
+
+.right {
+    margin: 0 auto 0 4rem;
+}
+
+.login {
+    text-decoration-line: underline;
+    font-size: 17px;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.title {
+    color: rgb(210, 54, 54);
+    font-size: 3.4rem;
+    font-weight: 900;
+    margin-bottom: 4rem;
+    text-align: center;
+}
+
+.desc {
+    color: #fff6ef;
+    text-align: right;
+}
+
+.form {
+    margin: 40px;
+    height: calc(100% - 80px);
+    display: flex;
+    min-width: 300px;
+    width: 27vw;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+label {
+    color:  #c2c2c5;
+    display: block;
+    font-size: 14px;
+    height: 16px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+input {
+    background: transparent;
+    border: 0;
+    color: #f2f2f2;
+    font-size: 20px;
+    height: 30px;
+    line-height: 30px;
+    min-width: initial;
+    outline: none !important;
+    width: 100%;
+}
+
+input[type='username'], input[type='password'], input[type='password-again'] {
+    border-bottom: 2px solid;
+}
+
+.submit {
+    text-align: center;
+}
+
+input[type='submit'] {
+    margin-top: 2rem;
+    border: 2px solid;
+    height: 2.5rem;
+    width: 120px;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: color 300ms;
+}
+
+input[type='submit']:focus {
+    color: #f2f2f2;
+}
+
+input[type='submit']:active {
+    color: #d0d0d2;
+}
+
+input::-moz-focus-inner {
+    border: 0;
+}

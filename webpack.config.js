@@ -9,10 +9,18 @@ module.exports = {
     },
 
     devServer: {
+        host: "0.0.0.0",
+        disableHostCheck: true,
         contentBase: './dist',
         historyApiFallback: true,
         inline: true,
-        hot: true
+        hot: true,
+        proxy: {
+            '/server': {
+                target: 'http://188.131.187.85:9999',
+                pathRewrite: {'^/server': ''}
+            }
+        }
     },
 
     resolve:{
@@ -27,7 +35,7 @@ module.exports = {
             template: path.resolve(__dirname, "public/index.html"),
             filename: "index.html",
             favicon: path.resolve(__dirname, "src/assets/favicon.ico")
-        })
+        }),
     ],
     module: {
         rules: [
@@ -44,7 +52,7 @@ module.exports = {
                 loader: "babel-loader"
             },
             {
-                test: /\.(png|jpg|jpeg|glb|gltf)$/,
+                test: /\.(png|jpg|jpeg|glb|gltf|fbx)$/,
                 use: [
                     {
                         loader: 'url-loader',
@@ -56,6 +64,8 @@ module.exports = {
                     }
                 ]
             },
+            { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
+            { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
         ]
     }
 };

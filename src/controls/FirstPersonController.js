@@ -1,7 +1,6 @@
 const Component = require('#/system/Component');
 const THREE = window.THREE;
-const config = require('#/config');
-
+const globalConfig = require('#/config');
 const PI_2 = Math.PI / 2;
 const gravity = 9.8;
 
@@ -12,12 +11,15 @@ const KeyCodes = {
     D: 68,
     E: 69,
     Q: 81,
-    SPACE: 32
+    SPACE: 32,
+    ESC: 27
 };
 
 class FirstPersonController extends Component{
-    constructor(){
+    constructor(config){
         super();
+
+        this.config = Object.assign({}, globalConfig.player, config);
 
         //是否激活控制（当用户按下 Esc 键时失去控制）
         this.active = false;
@@ -35,11 +37,17 @@ class FirstPersonController extends Component{
         this.mass = 0.6;
 
         // 人物（摄影机）高度
-        this.height = 6.0;
+        this.height = this.config.height;
+
+        // 中间点
+        this.centerPoint = new THREE.Vector2(0, 0);
+
+        // 光线投射
+        this.rayCaster = new THREE.Raycaster();
 
         // 摄像机
         const aspect = window.innerWidth / window.innerHeight;
-        this._camera = new THREE.PerspectiveCamera(config.camera.fov, aspect, config.camera.near, config.camera.far);
+        this._camera = new THREE.PerspectiveCamera(globalConfig.camera.fov, aspect, globalConfig.camera.near, globalConfig.camera.far);
     }
 
     onCreate(){
@@ -54,6 +62,7 @@ class FirstPersonController extends Component{
         //视角旋转（水平方向）
         this.yawObject = new THREE.Object3D();
         this.yawObject.add( this.pitchObject );
+        this.yawObject.position.y = this.height;
         
         //整个 Player 对象
         this.player = new THREE.Group();
@@ -64,9 +73,9 @@ class FirstPersonController extends Component{
         this.setObject(this.player);
 
         // 加载控制
-        this.$dom.addEventListener('mousemove', this._onMouseMove.bind(this), false);
-        document.addEventListener('keydown', this._onKeyDown.bind(this), false);
-        document.addEventListener('keyup', this._onKeyUp.bind(this), false);
+        this.$world.addEventListener('mousemove', this._onMouseMove.bind(this));
+        this.$world.addEventListener('keydown', this._onKeyDown.bind(this));
+        this.$world.addEventListener('keyup', this._onKeyUp.bind(this));
         this.setupPointerLockControls();
     }
 
@@ -83,17 +92,19 @@ class FirstPersonController extends Component{
         this.suspended = false;
     }
 
+    lock() {
+        if(!this.suspended){
+            this.active = true;
+            this.$dom.requestPointerLock();
+            this.$ui.hide();
+        }
+    }
+
     setupPointerLockControls(){
         // 开启鼠标指针锁定
         if(typeof this.$dom.requestPointerLock === 'function'){
             //按下鼠标左键时锁定
-            this.$dom.addEventListener('click', () => {
-                if(!this.suspended){
-                    this.active = true;
-                    this.$dom.requestPointerLock();
-                    this.$ui.hide();
-                }
-            });
+            this.$dom.addEventListener('click', this.lock.bind(this));
 
             //锁定时激活控制
             document.addEventListener('pointerlockchange', () => {
@@ -107,6 +118,9 @@ class FirstPersonController extends Component{
 
     onRender(deltaTime){
         super.onRender(deltaTime);
+
+        // 碰撞物体检测
+        this.rayCaster.setFromCamera(this.centerPoint, this.getCamera());
 
         const inAir = this.inAir;
 
@@ -133,12 +147,12 @@ class FirstPersonController extends Component{
 
         // 把方向乘以移动速度
         if(direction.length() > 0){
-            groundVelocity.copy(direction.normalize().multiplyScalar(deltaTime * config.player.moveSpeed));
+            groundVelocity.copy(direction.normalize().multiplyScalar(deltaTime * this.config.moveSpeed));
         }
 
         //处理水平方向的阻力
         if(groundVelocity.length() > 0)
-            groundVelocity.lerp(new THREE.Vector3(), config.player.frictionFactor * this.mass * deltaTime);
+            groundVelocity.lerp(new THREE.Vector3(), this.config.frictionFactor * this.mass * deltaTime);
 
         //处理竖直方向的重力
         if(inAir)
@@ -152,6 +166,10 @@ class FirstPersonController extends Component{
         //计算速度
         this.velocity.add(groundVelocity);
 
+        if(this.restrict){
+            this.velocity = this.restrict.filter(this.velocity);
+        }
+
         if(this.velocity.length() > 0){
             this.player.position.add(this.velocity);
         }
@@ -159,6 +177,10 @@ class FirstPersonController extends Component{
 
     getCamera() {
         return this._camera;
+    }
+
+    getRayCaster() {
+        return this.rayCaster;
     }
 
 // 判断人物是否在空中
@@ -172,8 +194,8 @@ class FirstPersonController extends Component{
             let movementX = event.movementX || 0;
             let movementY = event.movementY || 0;
 
-            this.yawObject.rotation.y -= movementX * config.player.horizontalSensitivity;
-            this.pitchObject.rotation.x -= movementY * config.player.verticalSensitivity;
+            this.yawObject.rotation.y -= movementX * this.config.horizontalSensitivity;
+            this.pitchObject.rotation.x -= movementY * this.config.verticalSensitivity;
 
             this.pitchObject.rotation.x = Math.max( - PI_2, Math.min( PI_2, this.pitchObject.rotation.x ));
         }
@@ -189,16 +211,14 @@ class FirstPersonController extends Component{
         if(this.active){
             const code = event.keyCode;
             this.keyState[code] = false;
-
-
-            if(code === KeyCodes.E){
-                this.$ui.show();
-                this.active = false;
-                document.exitPointerLock();
-
+            
+            if (code === KeyCodes.Q) {
+                this.$ui.hide();
             }
         }
     }
+
+    
 }
 
 

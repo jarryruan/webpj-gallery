@@ -17,6 +17,14 @@ class App{
             if(worlds[key])
                 framework.setWorld(worlds[key]);
         });
+
+        //在浏览器的 Console 执行 framework.openRoom(options); 即可执行以下方法
+        framework.export("openRoom", (options) => {
+            worlds.room.update(options);
+            framework.setWorld(worlds['room']);
+        });
+
+        framework._ui.show({}, 'login');
     }
 }
 

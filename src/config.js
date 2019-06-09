@@ -1,4 +1,5 @@
 const domain = window.location.host.split(':')[0];
+const axios = require("axios");
 
 module.exports = {
     //摄像机设置
@@ -8,16 +9,23 @@ module.exports = {
         far: 1000
     },
 
-    player:{
+    player: {
         horizontalSensitivity: 0.002,
         verticalSensitivity: 0.002,
-        moveSpeed: 25.0,
+        moveSpeed: 15.0,
         frictionFactor: 10.0,
-        syncSpeed: 1.0
+        height: 4.5
     },
 
     server:{
         domain: domain,
         root: 'ws://' + domain + ':3000/'
-    }
+    },
+
+    axiosInstance: axios.create({
+        baseURL: "/server",
+        timeout: 3000,
+        headers: {'X-Requested-With':'XMLHttpRequest'},
+    })
+    // api: "188.131.187.85:9999"
 };

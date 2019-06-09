@@ -4,10 +4,12 @@ const config = require('#/config');
 
 
 class World extends Component{
-    constructor(){
+    constructor(name){
         super();
+        this.name = name;
         this.$world = this;
         this.$parent = null;
+        this.mixers = [];
 
         const aspect = window.innerWidth / window.innerHeight;
         this.scene = new THREE.Scene();
@@ -15,9 +17,24 @@ class World extends Component{
         this.setObject(this.scene);
     }
 
+    addEventListener(eventName, callback, dom = this.$dom){
+        dom.addEventListener(eventName, (event) => {
+            if(this.$framework.getWorld().name === this.name){
+                callback(event);
+            }
+        });
+    }
+
 
     setCamera(camera){
         this.camera = camera;
+    }
+    
+    onRender(deltaTime){
+        super.onRender(deltaTime);
+        this.mixers.forEach((mixer) => {
+            mixer.update(deltaTime);
+        })
     }
 }
 
