@@ -1,20 +1,24 @@
 const THREE = window.THREE;
 const Component = require("#/system/Component");
 
+const typeface = require('three/examples/fonts/helvetiker_regular.typeface.json');
+
+
 class Text extends Component{
-    constructor(){
+    constructor(text1){
         super();
+
         let loader=new THREE.FontLoader();
-        loader.load('../../../lib/helvetiker_regular.typeface.json', function ( font ){
-            let text = new THREE.TextGeometry("initial", {
-                size: 14, height: 1.7, weight: 'normal', style: 'normal'
-            });
-            text.center();
-            let material = new THREE.MeshBasicMaterial({color:0x000000});
-            let result = new THREE.Mesh(text,material);
-            // result.translateY(50);
-            this.setObject(result);
+
+        let text = new THREE.TextGeometry(text1, {
+            size: 1, height: 0.2, weight: 'normal', style: 'normal', font: loader.parse(typeface)
         });
+        text.center();
+        let material = new THREE.MeshBasicMaterial({color:0x000000});
+        let result = new THREE.Mesh(text, material);
+
+
+        this.setObject(result);
     }
     onCreate() {
         super.onCreate();

@@ -20,8 +20,11 @@ class HallWorld extends World{
         // this.testBox = new TestBox();
         // this.floor=new Floor();
         this.roomCenter1=new RoomOne();
-
+        let a=this.roomCenter1.getObject();
+        console.log(a.position);
         this.roomCenter2=new RoomTwo();
+        let b=this.roomCenter2.getObject();
+        console.log(b.position);
         this.roomCenter3=new RoomThree();
         this.floor=new Floor();
         this.guide=new Guide();

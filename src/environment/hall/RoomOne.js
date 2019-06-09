@@ -1,4 +1,4 @@
-require('../../../lib/threebsp');
+require('../../assets/lib/threebsp');
 const THREE = window.THREE;
 const Component = require("#/system/Component");
 const floorImg = require("#/assets/textures/room/wallpaper.jpg");
@@ -17,12 +17,12 @@ const PaintingFrame=require('#/environment/hall/PaintingFrame');
 class RoomOne extends Component {
     constructor() {
         super();
-        let frontWall = new THREE.BoxGeometry(0, 0, 0);
+        // let frontWall = new THREE.BoxGeometry(0, 0, 0);
         let materials = new THREE.MeshBasicMaterial({map: texture});
-        let result1 = new THREE.Mesh(frontWall, materials);
+        // let result1 = new THREE.Mesh(frontWall, materials);
 
 
-        this.setObject(result1);
+        // this.setObject(result1);
         this.wall1 = new Wall();
         this.wall2 = new Wall();
         this.wall3 = new Wall();
@@ -41,6 +41,11 @@ class RoomOne extends Component {
         this.addDoor(materials);
 
         this.addPainting();
+        let group=new THREE.Group(this.wall1,this.wall2,this.wall3,this.wall4,this.roof,this.doorFrame);
+        group.translateZ(-100);
+        group.translateX(100);
+        // group.translateY(25);
+        this.setObject(group);
     }
     addPainting(){
         let paints = [];
@@ -52,43 +57,43 @@ class RoomOne extends Component {
             paintFrames[i]=this.paintingFrames[i].getObject();
         }
         paints[0].rotation.y=Math.PI/2;
-        paints[0].translateX(120);
-        paints[0].translateZ(61);
+        paints[0].translateX(20);
+        paints[0].translateZ(-39);
 
         paints[1].rotation.y=Math.PI/2;
-        paints[1].translateZ(61);
-        paints[1].translateX(80);
+        paints[1].translateZ(-39);
+        paints[1].translateX(-20);
 
         paintFrames[0].rotation.y=Math.PI/2;
-        paintFrames[0].translateX(120);
-        paintFrames[0].translateZ(61);
+        paintFrames[0].translateX(20);
+        paintFrames[0].translateZ(-39);
 
         paintFrames[1].rotation.y=Math.PI/2;
-        paintFrames[1].translateZ(61);
-        paintFrames[1].translateX(80);
+        paintFrames[1].translateZ(-39);
+        paintFrames[1].translateX(-20);
 
         for (let i = 2; i < 5; i++) {
-            paints[i].translateX(60 + 8.75 * (i - 1) + 15 * (i - 3 / 2));
-            paints[i].translateZ(-61);
+            paints[i].translateX(-40 + 8.75 * (i - 1) + 15 * (i - 3 / 2));
+            paints[i].translateZ(39);
 
-            paintFrames[i].translateX(60 + 8.75 * (i - 1) + 15 * (i - 3 / 2));
-            paintFrames[i].translateZ(-61);
+            paintFrames[i].translateX(-40 + 8.75 * (i - 1) + 15 * (i - 3 / 2));
+            paintFrames[i].translateZ(39);
         }
         for (let i = 5; i < 8; i++) {
             paints[i].rotation.y = Math.PI / 2;
-            paints[i].translateZ(139);
-            paints[i].translateX(60+8.75*(i-4)+15*(i-9/2));
+            paints[i].translateZ(39);
+            paints[i].translateX(-40+8.75*(i-4)+15*(i-9/2));
 
             paintFrames[i].rotation.y = Math.PI / 2;
-            paintFrames[i].translateZ(139);
-            paintFrames[i].translateX(60+8.75*(i-4)+15*(i-9/2));
+            paintFrames[i].translateZ(39);
+            paintFrames[i].translateX(-40+8.75*(i-4)+15*(i-9/2));
         }
         for (let i = 8; i < 11; i++) {
-            paints[i].translateZ(-139);
-            paints[i].translateX(140 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
+            paints[i].translateZ(-39);
+            paints[i].translateX(40 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
 
-            paintFrames[i].translateZ(-139);
-            paintFrames[i].translateX(140 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
+            paintFrames[i].translateZ(-39);
+            paintFrames[i].translateX(40 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
         }
         for (let i = 0; i < 11; i++) {
             this.paintings[i].setObject(paints[i]);
@@ -99,8 +104,8 @@ class RoomOne extends Component {
     addRoof(materials) {
         let roof = this.roof.getObject();
         // roof.translate(100,100,50);
-        roof.translateX(100);
-        roof.translateY(-100);
+        // roof.translateX(100);
+        // roof.translateY(-100);
         roof.translateZ(-50);
         roof.material = materials;
         this.roof.setObject(roof);
@@ -109,21 +114,21 @@ class RoomOne extends Component {
 
     addWall(materials) {
         let aa = this.wall1.getObject();
-        aa.translateZ(-140);
-        aa.translateX(100);
+        aa.translateZ(-40);
+        // aa.translateX(100);
         aa.material = materials;
         this.wall1.setObject(aa);
 
         let bb = this.wall2.getObject();
-        bb.translateZ(-60);
-        bb.translateX(100);
+        bb.translateZ(40);
+        // bb.translateX(100);
         bb.material = materials;
         this.wall2.setObject(bb);
 
         let a = this.wall3.getObject();
         a.rotation.y = Math.PI / 2;
-        a.translateX(100);
-        a.translateZ(140);
+        // a.translateX(100);
+        a.translateZ(40);
         a.material = materials;
         this.wall3.setObject(a);
     }
@@ -131,13 +136,13 @@ class RoomOne extends Component {
     addDoor(materials) {
         let b = this.wall4.getObject();
         b.rotation.y = Math.PI / 2;
-        b.translateX(100);
-        b.translateZ(60);
+        // b.translateX(100);
+        b.translateZ(-40);
         let door = new THREE.BoxGeometry(10, 20, 0);
         let doors = new THREE.Mesh(door);
         doors.rotation.y = Math.PI / 2;
-        doors.translateZ(60);
-        doors.translateX(100);
+        doors.translateZ(-40);
+        // doors.translateX(100);
         doors.translateY(10);
         let meshH4Door = new ThreeBSP(doors);
         let meshH4Wall = new ThreeBSP(b);
@@ -147,8 +152,8 @@ class RoomOne extends Component {
 
         let d = this.doorFrame.getObject();
         d.rotation.y = Math.PI / 2;
-        d.translateX(100);
-        d.translateZ(60);
+        // d.translateX(100);
+        d.translateZ(-40);
         this.doorFrame.setObject(d);
 
         this.wall4.setObject(b);
