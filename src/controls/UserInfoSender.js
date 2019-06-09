@@ -34,7 +34,6 @@ class UserInfoSender extends Component{
                                     y: this.$parent.yawObject.rotation.y,
                                     z: 0
                                 },
-                                roomId: this.$world.id
                             });
                             this.$ui.show(userInfo, "user");
                             this.$parent.active = false;

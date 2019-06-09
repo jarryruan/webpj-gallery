@@ -13,7 +13,7 @@ const Comment = require('#/environment/room/Comment');
 const Canvas = require('#/environment/room/Canvas');
 const MovementRestrict = require('#/environment/room/MovementRestrict');
 const PlayerGroup = require("#/controls/PlayerGroup");
-
+const NPC = require('#/controls/NPC');
 
 const config = require('#/config');
 const DataSender = require('#/controls/DataSender');
@@ -24,56 +24,29 @@ const UserInfoSender = require('#/controls/UserInfoSender');
 const Light = require('#/environment/room/Light');
 
 class RoomWorld extends World{
-    constructor(id){
+    constructor(){
         super('room');
-        this.id = id;
+        this.options = {};
         this.skyBox = new SkyBox();
         this.comments = [];
         this.floor = new Floor();
         this.canvas = null;
         this.playerGroup = new PlayerGroup();
         this.controller = new FirstPersonController();
+
+        this.NPC = new NPC(1);
+        // console.log(this.NPC);
     }
 
     onCreate() {
         super.onCreate();
 
-        this.canvas = this.setCanvas(initCanvas);
-        this.canvas.getObject().position.set(0, 45, -100);
-        
-        const comment1 = new Comment({
-            "userId": 1,
-            "username": "黑桐谷歌",
-            "content": "居然是讯息",
-            "transform": {
-                "position": {"x": 0, "y": 0, "z": -10},
-                "rotation": {"x": 0, "y": 2, "z": 0}
-            }
-        });
-
-        // get comments from server
-        config.axiosInstance.get(`/api/paintings/${this.id}/comments`)
-            .then((resp) => {
-                if (resp.status === 200) {
-                    let response = resp.data;
-                    if (response.result) {
-                        this.comments = response.comments.map((value) => (new Comment(value)));
-                        this.comments.push(comment1);
-
-                        this.useAll(this.comments);
-
-                    } else window.message.error(response.message);
-                } else window.message.error("加载评论失败");
-            }).catch((error) => {
-                window.message.error(error);
-            });
-
         this.use(new Light());
         this.use(this.skyBox);
         this.use(this.floor);
-        this.use(this.canvas);
         this.use(this.controller);
         this.use(this.playerGroup);
+
         this.controller.use(new DataSender());
         this.controller.use(new MovementRestrict());
         this.controller.use(new CommentSender());
@@ -110,8 +83,51 @@ class RoomWorld extends World{
 
     }
 
+    update(options){
+        this.options = options;
+        this.unmount(this.canvas);
+        this.unmountAll(this.comments);
+        this.setCanvas(this.options.paintingPath);
+        this.getComments();
+        this.NPC.setPaintingId(this.options.paintingId);
+        this.use(this.NPC);
+        this.NPC.moveTo(new THREE.Vector3(40, 0, -40), new THREE.Vector3(0, Math.PI * 3 / 4, 0));
+        this.NPC.getObject().position.set(40, 0, -40);
+    }
+
     setCanvas(url) {
-        return new Canvas(url);
+        this.canvas = new Canvas(url);
+        this.canvas.getObject().position.set(0, 45, -100);
+        this.use(this.canvas);
+    }
+
+    getComments() {
+        const comment1 = new Comment({
+            "userId": 1,
+            "username": "黑桐谷歌",
+            "content": "居然是讯息",
+            "transform": {
+                "position": {"x": 0, "y": 0, "z": -10},
+                "rotation": {"x": 0, "y": 2, "z": 0}
+            }
+        });
+
+        // get comments from server
+        config.axiosInstance.get(`/api/paintings/${this.options.paintingId}/comments`)
+            .then((resp) => {
+                if (resp.status === 200) {
+                    let response = resp.data;
+                    if (response.result) {
+                        this.comments = response.comments.map((value) => (new Comment(value)));
+                        this.comments.push(comment1);
+
+                        this.useAll(this.comments);
+
+                    } else window.message.error(response.message);
+                } else window.message.error("加载评论失败");
+            }).catch((error) => {
+            window.message.error(error);
+        });
     }
 
     addComment(options) {

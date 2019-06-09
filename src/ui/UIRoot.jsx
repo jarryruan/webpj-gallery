@@ -104,7 +104,8 @@ class UIRoot extends React.Component{
 
     handleWriteComment(e) {
         e.preventDefault();
-        
+
+        this.refs.BTComment.disabled = true;
         if (this.state.comment !== "") {
 
             let commentOptions = {
@@ -115,7 +116,7 @@ class UIRoot extends React.Component{
                 }
             };
 
-            config.axiosInstance.post(`/api/paintings/${this.state.userInfo.roomId}/comments`, commentOptions).then((resp) => {
+            config.axiosInstance.post(`/api/paintings/${this.state.userInfo.paintingId}/comments`, commentOptions).then((resp) => {
                 console.log(resp);
                 if (resp.status === 200) {
                     let response = resp.data;
@@ -124,12 +125,14 @@ class UIRoot extends React.Component{
                         this.$framework.getWorld().addComment(commentOptions);
                         window.message.success(response.message);
                         this.hide();
+                        this.refs.BTComment.disabled = false;
                     } else window.message.error(response.message);
                 } else window.message.error(resp.status)
             });
         } else {
             window.message.error("评论为空");
         }
+
 
     }
 
@@ -206,7 +209,7 @@ class UIRoot extends React.Component{
                                 </ul>
                             </div>
 
-                            <p className={styles.room}>Room ID: {this.state.userInfo.roomId}</p>
+                            {/*<p className={styles.room}>房间名: {this.state.userInfo.name}</p>*/}
 
                             <div className={`${styles.flex} ${styles.vertical} ${styles.center}`}>
                                 <input type="submit" className={styles.login} value="登出" onClick={this.handleLogout} />
@@ -263,7 +266,7 @@ class UIRoot extends React.Component{
                                     <textarea ref="IComment" value={this.state.comment} onChange={this.onChange.bind(this, "comment")} />
                                 </div>
                                 <div>
-                                    <button className={styles['bt-primary']} onClick={this.handleWriteComment}>提交</button>
+                                    <button ref="BTComment" className={styles['bt-primary']} onClick={this.handleWriteComment}>提交</button>
                                 </div>
                             </form>
                         </div>
