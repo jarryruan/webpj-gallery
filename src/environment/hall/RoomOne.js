@@ -31,7 +31,7 @@ class RoomOne extends Component {
     constructor() {
         super();
         // let frontWall = new THREE.BoxGeometry(0, 0, 0);
-        let materials = new THREE.MeshPhongMaterial({map: diffMap, normalMap: normalMap});
+        let materials = new THREE.MeshPhongMaterial({side:THREE.DoubleSide,map: diffMap, normalMap: normalMap});
         // let result1 = new THREE.Mesh(frontWall, materials);
 
 

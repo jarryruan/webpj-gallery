@@ -8,7 +8,7 @@ class Painting extends Component{
         let image = require("#/assets/textures/room/wood.jpeg");
         const loader = new THREE.TextureLoader();
         let texture = loader.load(image);
-        let material=new THREE.MeshBasicMaterial({map:texture});
+        let material=new THREE.MeshBasicMaterial({side:THREE.DoubleSide,map:texture});
         let frames=new THREE.Mesh(frame,material);
         frames.translateY(20);
         this.setObject(frames);
