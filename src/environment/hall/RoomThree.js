@@ -13,6 +13,7 @@ const Roof = require('#/environment/hall/Roof');
 const DoorFrame = require('#/environment/hall/DoorFrame');
 const Painting = require('#/environment/hall/Painting');
 const PaintingFrame=require('#/environment/hall/PaintingFrame');
+const RoomLight=require('#/environment/hall/RoomLight');
 const getPainting = require("./GetPainting");
 
 class RoomThree extends Component {
@@ -27,6 +28,8 @@ class RoomThree extends Component {
         this.wall2 = new Wall();
         this.wall3 = new Wall();
         this.wall4 = new Wall();
+
+        this.light = new RoomLight();
 
         this.paintings = [];
         this.paintingFrames = [];
@@ -180,6 +183,7 @@ class RoomThree extends Component {
         this.use(this.wall3);
         this.use(this.wall4);
         this.use(this.roof);
+        this.use(this.light);
         this.use(this.doorFrame);
         for (let i = 0; i < 11; i++) {
             this.use(this.paintings[i]);

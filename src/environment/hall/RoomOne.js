@@ -19,11 +19,13 @@ normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
 normalMap.repeat.set(4, 4);
 
 
+
 const Wall = require('#/environment/hall/Wall');
 const Roof = require('#/environment/hall/Roof');
 const DoorFrame = require('#/environment/hall/DoorFrame');
 const Painting = require('#/environment/hall/Painting');
 const PaintingFrame=require('#/environment/hall/PaintingFrame');
+const RoomLight = require('#/environment/hall/RoomLight');
 
 class RoomOne extends Component {
     constructor() {
@@ -39,6 +41,7 @@ class RoomOne extends Component {
         this.wall3 = new Wall();
         this.wall4 = new Wall();
         this.roof = new Roof();
+        this.light = new RoomLight();
 
         this.doorFrame = new DoorFrame();
         this.paintings = [];
@@ -178,15 +181,12 @@ class RoomOne extends Component {
         this.use(this.wall3);
         this.use(this.wall4);
         this.use(this.roof);
+        this.use(this.light);
         this.use(this.doorFrame);
         for (let i = 0; i < 11; i++) {
             this.use(this.paintings[i]);
             this.use(this.paintingFrames[i]);
         }
-
-        const spotLight = new THREE.SpotLight(0xffffff, 1.0);
-        spotLight.position.y = 10.0;
-        this.getObject().add(spotLight);
     }
 
 

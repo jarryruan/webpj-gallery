@@ -14,6 +14,7 @@ const RoomTwo=require('#/environment/hall/RoomTwo');
 const RoomThree=require('#/environment/hall/RoomThree');
 const Light = require("#/environment/hall/Light");
 const Guide=require('#/environment/hall/Guide');
+const MovementRestrict=require('#/environment/room/MovementRestrict');
 const PlayerGroup = require("#/controls/PlayerGroup");
 
 const DataSender = require("#/controls/DataSender.js");
@@ -50,6 +51,7 @@ class HallWorld extends World{
         this.use(this.fog);
         
         this.use(this.controller);
+        this.controller.use(new MovementRestrict());
         // this.use(this.building);
         this.controller.use(new DataSender());
         this.controller.use(new BarrageSender());
