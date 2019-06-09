@@ -55,6 +55,7 @@ class Component{
             component.$framework = this.$framework;
             component.$ui = this.$ui;
             component.$world = this.$world;
+            component.$client = this.$client;
 
             component.$parent = this;
 
@@ -67,6 +68,12 @@ class Component{
             }
 
         }
+    }
+
+    useAll(components) {
+        components.forEach((component) => {
+            this.use(component);
+        })
     }
 
     unmount(component){

@@ -19,7 +19,7 @@ class RoomThree extends Component {
     constructor() {
         super();
         let geometry = new THREE.BoxGeometry(0, 0, 0);
-        let materials = new THREE.MeshBasicMaterial({side: THREE.DoubleSide, map: texture});
+        let materials = new THREE.MeshPhongMaterial({side: THREE.DoubleSide, map: texture});
         // let result = new THREE.Mesh(geometry, materials);
         // this.setObject(result);
 
@@ -151,11 +151,11 @@ class RoomThree extends Component {
         getPainting.getData(function (res) {
            console.log(res);
             if (res){
-                        let result=JSON.parse(res);
-                        let texture=loader.load(result.paintings[0].url);
-                        let material=new THREE.MeshBasicMaterial({map:material});
-                        paints[0].material=material;
-                    }
+                let result=JSON.parse(res);
+                let texture = loader.load(result.paintings[0].paintingPath);
+                // let material=new THREE.MeshBasicMaterial({map: texture});
+                paints[0].material.map = texture;
+            }
         });
         for (let i = 0; i < 11; i++) {
             this.paintings[i].setObject(paints[i]);

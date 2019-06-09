@@ -1,0 +1,28 @@
+
+.animation-wrapper {
+    width: 50%;
+}
+
+.svg-sphere-animation {
+    width: 60%;
+    margin: 0 5rem 0 auto;
+    transform: scale(1) !important;
+}
+
+.svg-sphere {
+    position: initial;
+    width: auto;
+}
+
+.svg-sphere path {
+    fill: url(#sphereGradient);
+    stroke-width: 1px;
+    stroke: rgba(80,80,80,.35);
+    backface-visibility: hidden;
+}
+
+@media (min-width: 500px) {
+    .svg-sphere path {
+        stroke-width: .4px;
+    }
+}

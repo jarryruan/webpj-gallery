@@ -1,13 +1,24 @@
 require('../../assets/lib/threebsp');
 const THREE = window.THREE;
 const Component = require("#/system/Component");
-const floorImg = require("#/assets/textures/room/wallpaper.jpg");
+// const floorImg = require("#/assets/textures/room/wallpaper.jpg");
 
-const Floor = require('#/environment/hall/Floor');
+
+const diff = require('#/assets/textures/room/block_diff.jpg');
+const normal = require('#/assets/textures/room/block_normal.jpg');
+
+
 const loader = new THREE.TextureLoader();
-const texture = loader.load(floorImg);
-texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-// texture.repeat.set(4, 4);
+
+const diffMap = loader.load(diff);
+diffMap.wrapS = diffMap.wrapT = THREE.RepeatWrapping;
+diffMap.repeat.set(4, 4);
+
+const normalMap = loader.load(normal);
+normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
+normalMap.repeat.set(4, 4);
+
+
 const Wall = require('#/environment/hall/Wall');
 const Roof = require('#/environment/hall/Roof');
 const DoorFrame = require('#/environment/hall/DoorFrame');
@@ -18,7 +29,7 @@ class RoomOne extends Component {
     constructor() {
         super();
         // let frontWall = new THREE.BoxGeometry(0, 0, 0);
-        let materials = new THREE.MeshBasicMaterial({map: texture});
+        let materials = new THREE.MeshPhongMaterial({map: diffMap, normalMap: normalMap});
         // let result1 = new THREE.Mesh(frontWall, materials);
 
 
@@ -172,6 +183,10 @@ class RoomOne extends Component {
             this.use(this.paintings[i]);
             this.use(this.paintingFrames[i]);
         }
+
+        const spotLight = new THREE.SpotLight(0xffffff, 1.0);
+        spotLight.position.y = 10.0;
+        this.getObject().add(spotLight);
     }
 
 
