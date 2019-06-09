@@ -25,6 +25,10 @@ class World extends Component{
         });
     }
 
+    onAwake(){
+        this.$framework.onResize();
+    }
+
 
     setCamera(camera){
         this.camera = camera;
