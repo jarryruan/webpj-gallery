@@ -4,16 +4,16 @@ const THREE = window.THREE;
 const Player = require('./Player');
 
 class PlayerGroup extends Component{
-    constructor(){
+    constructor(paintingId = -1){
         super();
         this.players = new Map();
+        this.paintingId = paintingId;
     }
 
     onCreate(){
         this.setObject(new THREE.Group());
-
-        this.$client.on('move', this.onMove.bind(this));
-        this.$client.on('barrage', this.onBarrage.bind(this));
+        this.$client.on('move', this.withVerifing(this.onMove.bind(this)));
+        this.$client.on('barrage', this.withVerifing(this.onBarrage.bind(this)));
         this.$client.on('exit', this.onExit.bind(this));
         
     }
@@ -25,6 +25,13 @@ class PlayerGroup extends Component{
             this.use(player);
         }
         return this.players.get(socketId);
+    }
+
+    withVerifing(callback){
+        return (data) => {
+            if(data.paintingId === this.paintingId)
+                callback(data);
+        }
     }
 
     onMove(data){
