@@ -9,19 +9,24 @@ const urls = {
     samba: require('#/assets/models/samba.fbx'),
     running: require('#/assets/models/running.fbx'),
     idle: require('#/assets/models/idle.fbx'),
-    walking: require('#/assets/models/walking.fbx')
+    walking: require('#/assets/models/walking.fbx'),
 }
 
 const animations = {
     idle: THREE.asyncLoader.fbx(urls.idle).then((mesh) => {return mesh.animations[0]}),
-    walking: THREE.asyncLoader.fbx(urls.running).then((mesh) => {return mesh.animations[0]})
-}
+    walking: THREE.asyncLoader.fbx(urls.running).then((mesh) => {return mesh.animations[0]}),
+};
 
 
 class Player extends Component{
+    constructor(modelURL = urls.samba){
+        super();
+        this.modelURL = modelURL;
+    }
+
     onCreate(){
         this.setObject(new THREE.Group());
-        THREE.asyncLoader.fbx(urls.samba).then(this.meshHandler.bind(this));
+        THREE.asyncLoader.fbx(this.modelURL).then(this.meshHandler.bind(this));
 
         this.target = {
             position: new THREE.Vector3(),

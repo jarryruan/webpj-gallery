@@ -87,8 +87,8 @@ class RoomWorld extends World{
         this.getComments();
         this.NPC.setPaintingId(this.options.paintingId);
         this.use(this.NPC);
-        this.NPC.moveTo(new THREE.Vector3(40, 0, -40), new THREE.Vector3(0, Math.PI * 3 / 4, 0));
-        this.NPC.getObject().position.set(40, 0, -40);
+        this.NPC.getObject().position.set(40, 0, -80);
+        this.NPC.getObject().rotation.set(0, Math.PI * 4 / 5, 0);
     }
 
     setCanvas(url) {
