@@ -25,7 +25,8 @@ class RoomThree extends Component {
         let materials = new THREE.MeshPhongMaterial({side: THREE.DoubleSide, map: texture});
         // let result = new THREE.Mesh(geometry, materials);
         // this.setObject(result);
-
+        this.data=[];
+        
         this.wall1 = new Wall();
         this.wall2 = new Wall();
         this.wall3 = new Wall();
@@ -78,6 +79,7 @@ class RoomThree extends Component {
     }
 
     addDoor(materials) {
+
         //带门的墙
         let bb = this.wall2.getObject();
         bb.translateZ(40);
@@ -155,22 +157,23 @@ class RoomThree extends Component {
             paintFrames[i].translateZ(-39);
             paintFrames[i].translateX(40 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
         }
-        getPainting.getData(function (res) {
-            if (res){
-                let result=JSON.parse(res);
-                console.log(result);
-                let texture = loader.load(result.paintings[0].paintingPath);
-                // let material=new THREE.MeshBasicMaterial({map: texture});
-                paints[0].material.map = texture;
-
-
-                // paints[0].name=result.paintings[0].paintingId;
-                // console.log("id is"+paints[0].name);
+        getPainting.getData((data)=>{
+            // this.data=data;
+            if(data){
+                let result=JSON.parse(data);
+                let paintings=result.paintings;
+                let a=0;
+                for (let i=0;i<paintings.length;i++){
+                    if (paintings[i].houseId===1&&a<paints.length){
+                        this.data[a]=paintings[i];
+                        let texture=loader.load(paintings[i].paintingPath);
+                        paints[a++].material.map=texture;
+                    }
+                } 
             }
         });
         for (let i = 0; i < 11; i++) {
             this.paintings[i].setObject(paints[i]);
-            console.log(paints[i].id);
             this.paintingFrames[i].setObject(paintFrames[i]);
         }
 
@@ -194,6 +197,8 @@ class RoomThree extends Component {
     }
 
     click(){
+
+        console.log(this.data);
         this.paintings.forEach((value) => {
             let intersect = this.$world.controller.getRayCaster().intersectObject(value.getObject());
             if (intersect.length > 0) {
@@ -202,28 +207,7 @@ class RoomThree extends Component {
                 let first=this.paintings[0].getObject().id;
 
                 id=(id-first)/4;
-                getPainting.getData(function (res){
-                    console.log(res);
-                    if (res){
-                        console.log("nihao");
-                        let result=JSON.parse(res);
-                        let allPaintings=result.paintings;
-                        let count=0;
-                        allPaintings.forEach(value1 => {
-                            console.log(value1);
-                            if (value1.houseId===1){
-                                console.log("chenggong");
-                                if (count!==id){
-                                    count++;
-                                    console.log(count);
-                                }else{
-                                    let postData=value1;
-                                    framework.openRoom(postData);
-                                }
-                            }
-                        })
-                    }
-                });
+                framework.openRoom(this.data[id]);
             }
         });
     }
