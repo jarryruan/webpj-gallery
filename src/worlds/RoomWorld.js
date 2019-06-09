@@ -11,7 +11,9 @@ const SkyBox = require('#/environment/room/SkyBox');
 const Floor = require('#/environment/room/Floor');
 const Comment = require('#/environment/room/Comment');
 const Canvas = require('#/environment/room/Canvas');
+const MovementRestrict = require('#/environment/room/MovementRestrict');
 const PlayerGroup = require("#/controls/PlayerGroup");
+
 
 const config = require('#/config');
 const DataSender = require('#/controls/DataSender');
@@ -73,6 +75,7 @@ class RoomWorld extends World{
         this.use(this.controller);
         this.use(this.playerGroup);
         this.controller.use(new DataSender());
+        this.controller.use(new MovementRestrict());
         this.controller.use(new CommentSender());
         this.controller.use(new BarrageSender());
         this.controller.use(new UserInfoSender());
@@ -99,11 +102,9 @@ class RoomWorld extends World{
         this.comments.forEach((value) => {
             let intersect = this.controller.getRayCaster().intersectObject(value.getObject());
             if (intersect.length > 0) {
-                intersect[0].object.material.color.set(0xff0000);
-                value.selected = true;
+                value.highlight();
             } else {
-                value.getObject().material.color.set(0xee00ee);
-                value.selected = false;
+                value.unhighlight();
             }
         });
 

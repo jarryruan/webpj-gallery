@@ -79,17 +79,19 @@ class UIRoot extends React.Component{
             });
             // input 聚焦
             this.refs.IBarrage.focus();
+
         } else if (partId === PartType.PERSON_INFO) {
             this.setState({
                 visible: true,
                 userInfo: info,
                 partId
             });
-        } else if (partId === PartType.LOGIN || partId === PartType.SIGN_UP) {
+        } else if (partId === PartType.LOGIN || partId === PartType.SIGN_UP || partId === PartType.AIMER) {
             this.setState({
                 visible: true,
                 partId
             });
+            
         } else {
             // do nothing
         }
@@ -102,7 +104,7 @@ class UIRoot extends React.Component{
 
     handleWriteComment(e) {
         e.preventDefault();
-
+        
         if (this.state.comment !== "") {
 
             let commentOptions = {
@@ -165,11 +167,9 @@ class UIRoot extends React.Component{
     }
 
     onChange(key, event) {
-
         this.setState({
             [key]: event.target.value
         });
-
     }
 
     linkTo(page) {
@@ -315,12 +315,15 @@ class UIRoot extends React.Component{
                     <Signup className={classes + ` ${styles['fill-width']}`} UIShow={this.show.bind(this)}
                     />
                 </div>);
-        }
-        else {
+
+        }else {
             return (<div className={classes}>partId error</div>);
         }
     }
 }
+
+
+
 
 module.exports = UIRoot;
 // export default UIRoot;

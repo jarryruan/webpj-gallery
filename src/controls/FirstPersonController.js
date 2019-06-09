@@ -166,6 +166,10 @@ class FirstPersonController extends Component{
         //计算速度
         this.velocity.add(groundVelocity);
 
+        if(this.restrict){
+            this.velocity = this.restrict.filter(this.velocity);
+        }
+
         if(this.velocity.length() > 0){
             this.player.position.add(this.velocity);
         }
