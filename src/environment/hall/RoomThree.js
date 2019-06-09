@@ -199,8 +199,9 @@ class RoomThree extends Component {
             if (intersect.length > 0) {
                 console.log(intersect);
                 let id=intersect[0].object.id;
-                console.log(id);
-                id=(id-130)/4;
+                let first=this.paintings[0].getObject().id;
+
+                id=(id-first)/4;
                 getPainting.getData(function (res){
                     console.log(res);
                     if (res){
