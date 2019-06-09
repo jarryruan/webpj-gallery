@@ -1,4 +1,4 @@
-const initCanvas = require('#/assets/textures/canvas/canvas-1.jpg');
+// const initCanvas = require('#/assets/textures/canvas/canvas-1.jpg');
 
 const THREE = window.THREE;
 const World = require('#/system/World');

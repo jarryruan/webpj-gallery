@@ -4,7 +4,6 @@ const config = require('#/config');
 class NPC extends Player {
     constructor(paintingId) {
         super();
-
         this.paintingId = paintingId;
     }
 

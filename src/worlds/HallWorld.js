@@ -14,7 +14,7 @@ const RoomTwo=require('#/environment/hall/RoomTwo');
 const RoomThree=require('#/environment/hall/RoomThree');
 const Light = require("#/environment/hall/Light");
 const Guide=require('#/environment/hall/Guide');
-const MovementRestrict=require('#/environment/room/MovementRestrict');
+const MovementRestrict=require('#/environment/hall/MovementRestrict');
 const PlayerGroup = require("#/controls/PlayerGroup");
 
 const DataSender = require("#/controls/DataSender.js");
@@ -36,10 +36,8 @@ class HallWorld extends World{
         this.roomCenter1=new RoomOne();
         
         let a=this.roomCenter1.getObject();
-        console.log(a.position);
         this.roomCenter2=new RoomTwo();
         let b=this.roomCenter2.getObject();
-        console.log(b.position);
         this.roomCenter3=new RoomThree();
         this.floor=new Floor();
         this.guide=new Guide();

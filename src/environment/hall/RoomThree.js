@@ -13,8 +13,10 @@ const Roof = require('#/environment/hall/Roof');
 const DoorFrame = require('#/environment/hall/DoorFrame');
 const Painting = require('#/environment/hall/Painting');
 const PaintingFrame=require('#/environment/hall/PaintingFrame');
+const getPainting = require("#/environment/hall/GetPainting");
+
+const FirstPersonController = require('#/controls/FirstPersonController');
 const RoomLight=require('#/environment/hall/RoomLight');
-const getPainting = require("./GetPainting");
 
 class RoomThree extends Component {
     constructor() {
@@ -28,6 +30,7 @@ class RoomThree extends Component {
         this.wall2 = new Wall();
         this.wall3 = new Wall();
         this.wall4 = new Wall();
+        this.controller = new FirstPersonController();
 
         this.light = new RoomLight();
 
@@ -44,11 +47,12 @@ class RoomThree extends Component {
 
         this.addPainting();
 
-        let group=new THREE.Group(this.wall1,this.wall2,this.wall3,this.wall4,this.roof,this.doorFrame);
+        let group = new THREE.Group(this.wall1, this.wall2, this.wall3, this.wall4, this.roof, this.doorFrame);
         group.translateZ(-220);
         // group.translateX(-100);
         // group.translateY(25);
         this.setObject(group);
+
     }
 
     addWall(materials) {
@@ -152,27 +156,22 @@ class RoomThree extends Component {
             paintFrames[i].translateX(40 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
         }
         getPainting.getData(function (res) {
-           console.log(res);
             if (res){
                 let result=JSON.parse(res);
+                console.log(result);
                 let texture = loader.load(result.paintings[0].paintingPath);
                 // let material=new THREE.MeshBasicMaterial({map: texture});
                 paints[0].material.map = texture;
+
+
+                // paints[0].name=result.paintings[0].paintingId;
+                // console.log("id is"+paints[0].name);
             }
         });
         for (let i = 0; i < 11; i++) {
             this.paintings[i].setObject(paints[i]);
             this.paintingFrames[i].setObject(paintFrames[i]);
         }
-
-        // getPainting.getData(function (res) {
-        //     if (res){
-        //         let result=JSON.parse(res);
-        //         let texture=loader.load(result.paintings[0].url);
-        //         let material=new THREE.MeshBasicMaterial({map:material});
-        //
-        //     }
-        // })
 
     }
 
@@ -190,7 +189,44 @@ class RoomThree extends Component {
             this.use(this.paintingFrames[i]);
         }
 
+        this.$world.addEventListener('click', this.click.bind(this));
     }
+
+    click(){
+        this.paintings.forEach((value) => {
+            let intersect = this.$world.controller.getRayCaster().intersectObject(value.getObject());
+            if (intersect.length > 0) {
+                console.log(intersect);
+                let id=intersect[0].object.id;
+                let first=this.paintings[0].getObject().id;
+
+                id=(id-first)/4;
+                getPainting.getData(function (res){
+                    console.log(res);
+                    if (res){
+                        console.log("nihao");
+                        let result=JSON.parse(res);
+                        let allPaintings=result.paintings;
+                        let count=0;
+                        allPaintings.forEach(value1 => {
+                            console.log(value1);
+                            if (value1.houseId===1){
+                                console.log("chenggong");
+                                if (count!==id){
+                                    count++;
+                                    console.log(count);
+                                }else{
+                                    let postData=value1;
+                                    framework.openRoom(postData);
+                                }
+                            }
+                        })
+                    }
+                });
+            }
+        });
+    }
+
 }
 
 module.exports = RoomThree;
