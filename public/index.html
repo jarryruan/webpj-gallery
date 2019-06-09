@@ -3,9 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>虚拟 3D 画展</title>
+    <style>
+    #aimer{
+        width: 8px;
+        height: 8px;
+        border-radius: 8px;
+        background-color: #fff;
+        position: absolute;
+        left: calc(50% - 4px);
+        top: calc(50% - 4px);
+        margin: 0 auto;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
+        z-index: 0;
+    }
+    </style>
 </head>
 <body>
 <div id="root" tabindex="0"></div>
 <div id="ui"></div>
+<div id="aimer"></div>
 </body>
 </html>

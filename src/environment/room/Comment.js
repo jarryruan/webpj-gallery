@@ -9,8 +9,10 @@ class Comment extends Component {
         this.username = options.username;
 
         const commentMaterial = new THREE.MeshStandardMaterial({
-            color: 0xee00ee,
-            side: THREE.DoubleSide
+            color: 0x22b14c,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 1.0
         });
         const commentGeometry = new THREE.OctahedronGeometry(1.0);
         const comment = new THREE.Mesh(commentGeometry, commentMaterial);
@@ -23,13 +25,20 @@ class Comment extends Component {
     }
 
     highlight(){
-        this.getObject().material.color.set(0xff0000);
+        this.getObject().material.color.set(0xffb400);
+        this.getObject().material.opacity = 1.0;
         this.selected = true;
     }
 
     unhighlight(){
-        this.getObject().material.color.set(0xee00ee);
+        this.getObject().material.color.set(0x22b14c);
+        this.getObject().material.opacity = 0.3;
         this.selected = false;
+    }
+
+    onRender(deltaTime){
+        super.onRender(deltaTime);
+        this.getObject().rotation.z += deltaTime;
     }
 
     getText() {

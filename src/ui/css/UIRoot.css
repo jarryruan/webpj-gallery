@@ -212,15 +212,3 @@ ul li {
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
-
-.aimer{
-    width: 8px;
-    height: 8px;
-    border-radius: 8px;
-    background-color: #fff;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    bottom: 50%;
-    margin: 0 auto;
-}

@@ -27,6 +27,7 @@ class HallWorld extends World{
         super('hall');
         this.skyBox = new SkyBox();
         this.fog = new Fog();
+        this.light = new Light();
         this.building = new Building();
         this.controller = new FirstPersonController();
         // this.testBox = new TestBox();
