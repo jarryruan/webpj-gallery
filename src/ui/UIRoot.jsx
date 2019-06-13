@@ -149,7 +149,7 @@ class UIRoot extends React.Component{
             this.$framework._dom.focus();
 
         } else {
-            console.log("123");
+            
             window.message.error("发送弹幕失败，没有信息");
         }
     }
