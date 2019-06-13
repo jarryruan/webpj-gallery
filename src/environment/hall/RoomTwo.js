@@ -203,7 +203,7 @@ class RoomTwo extends Component {
     click(){
 
         console.log(this.data);
-        this.paintings.forEach((value) => {
+        for(let value of this.paintings){
             let intersect = this.$world.controller.getRayCaster().intersectObject(value.getObject());
             if (intersect.length > 0) {
                 console.log(intersect);
@@ -212,8 +212,9 @@ class RoomTwo extends Component {
 
                 id=(id-first)/4;
                 framework.openRoom(this.data[id]);
+              break;
             }
-        });
+        }
     }
 }
 
