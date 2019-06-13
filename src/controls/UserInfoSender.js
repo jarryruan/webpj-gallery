@@ -35,6 +35,7 @@ class UserInfoSender extends Component{
                                     y: this.$parent.yawObject.rotation.y,
                                     z: 0
                                 },
+                                paintingId: this.$world.options.paintingId
                             });
                             this.$ui.show(userInfo, "user");
                             this.$parent.active = false;

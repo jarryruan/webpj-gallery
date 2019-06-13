@@ -38,6 +38,7 @@ class UIRoot extends React.Component{
         this.handleWriteComment = this.handleWriteComment.bind(this);
         this.handleSpeak = this.handleSpeak.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
+        this.handleBack = this.handleBack.bind(this);
 
         let ui = document.querySelector("#ui");
         ui.addEventListener('keydown', (e) => {
@@ -148,9 +149,18 @@ class UIRoot extends React.Component{
             this.$framework._dom.focus();
 
         } else {
-            console.log("123");
+            
             window.message.error("发送弹幕失败，没有信息");
         }
+    }
+
+    handleBack(e) {
+        e.preventDefault();
+
+        window.framework.view("hall");
+        this.hide();
+        this.$framework.getWorld().controller.lock();
+        this.$framework._dom.focus();
     }
 
     handleLogout(e) {
@@ -212,6 +222,8 @@ class UIRoot extends React.Component{
                             {/*<p className={styles.room}>房间名: {this.state.userInfo.name}</p>*/}
 
                             <div className={`${styles.flex} ${styles.vertical} ${styles.center}`}>
+                                {this.state.userInfo.paintingId >= 0 ?
+                                    <input type="submit" className={styles.back} value="返回主世界" onClick={this.handleBack} /> : null}
                                 <input type="submit" className={styles.login} value="登出" onClick={this.handleLogout} />
                                 <input type="submit" className={styles.signup} value="注册" onClick={this.linkTo.bind(this, 'signup')} />
                             </div>
