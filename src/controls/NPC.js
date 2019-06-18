@@ -19,6 +19,7 @@ class NPC extends Component{
         super();
         this.modelURL = modelURL;
         this.paintingId = paintingId;
+        this.timerId = 0;
     }
 
     onCreate(){
@@ -29,6 +30,11 @@ class NPC extends Component{
         this.use(bubble);
         bubble.setVisible(false);
         bubble.getObject().position.y = 12;
+    }
+
+    onSuspend() {
+        super.onSuspend();
+        clearInterval(this.timerId);
     }
 
     meshHandler(mesh){
@@ -68,7 +74,7 @@ class NPC extends Component{
                         
                         let len = response.instruction.length;
                         let i = 0;
-                        setInterval(() => {
+                        this.timerId = setInterval(() => {
                             this.showBarrage(response.instruction[i].content, 4000);
                             i = ++i % len;
                         }, 5500);

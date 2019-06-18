@@ -33,7 +33,7 @@ module.exports = {
     },
 
     axiosInstance: axios.create({
-        baseURL: "/server",
+        baseURL: "http://47.102.212.146:8080/",
         timeout: 5000,
         withCredentials: true // 允许携带cookie
     }),
