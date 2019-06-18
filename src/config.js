@@ -1,6 +1,16 @@
 const domain = window.location.host.split(':')[0];
 const axios = require("axios");
 
+axios.interceptors.request.use(
+    config => {
+        config.data = JSON.stringify(config.data);
+        config.headers = {
+            'Content-Type': "application/x-www-form-urlencoded"
+        };
+        return config;
+    }
+);
+
 module.exports = {
     //摄像机设置
     camera: {
@@ -12,7 +22,7 @@ module.exports = {
     player: {
         horizontalSensitivity: 0.002,
         verticalSensitivity: 0.002,
-        moveSpeed: 15.0,
+        moveSpeed: 30.0,
         frictionFactor: 10.0,
         height: 4.5
     },
@@ -24,8 +34,8 @@ module.exports = {
 
     axiosInstance: axios.create({
         baseURL: "/server",
-        timeout: 3000,
-        headers: {'X-Requested-With':'XMLHttpRequest'},
-    })
+        timeout: 5000,
+        withCredentials: true // 允许携带cookie
+    }),
     // api: "188.131.187.85:9999"
 };

@@ -108,6 +108,16 @@
     text-align: center;
 }
 
+.data .back {
+    margin: 1.5rem auto 1rem auto;
+    border: none;
+    height: 2.5rem;
+    width: 40%;
+    border-radius: 2rem;
+    background-color: #25b957;
+    cursor: pointer;
+}
+
 .data .login {
     margin: 1.5rem auto 1rem auto;
     border: none;

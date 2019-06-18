@@ -5,12 +5,13 @@ const http = require('http');
 //     return axios.get('/api/paintings');
 // }
 
+const config = require('#/config');
 
 function getData(callback) {
     let options = {
-        host: '188.131.187.85',
-        port: 9999,
-        path: '/api/paintings',
+        host: config.server.domain,
+        port: 8080,
+        path: '/server/api/paintings',
         method: 'GET'
     };
     let req = http.request(options, function (res) {

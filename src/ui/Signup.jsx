@@ -75,7 +75,7 @@ class Signup extends React.Component {
         // 多次连续 setState() 只会调用最后一次的 setState()
         let pass = Object.keys(this.rules).every((key) => (this.rules[key](key)));
         if (pass) {
-            console.log(this.state.form);
+            
             config.axiosInstance.post(
                 "/api/users", {
                     username: this.state.form.username,

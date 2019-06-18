@@ -13,6 +13,8 @@ const DoorFrame = require('#/environment/hall/DoorFrame');
 const Painting = require('#/environment/hall/Painting');
 const PaintingFrame=require('#/environment/hall/PaintingFrame');
 const RoomLight=require('#/environment/hall/RoomLight');
+const getPainting = require("#/environment/hall/GetPainting");
+
 
 class RoomTwo extends Component {
     constructor() {
@@ -34,7 +36,7 @@ class RoomTwo extends Component {
         this.doorFrame = new DoorFrame();
         this.paintings = [];
         this.paintingFrames = [];
-
+        this.data=[];
 
         this.addRoof(materials);
 
@@ -99,6 +101,21 @@ class RoomTwo extends Component {
             paintFrames[i].translateZ(-39);
             paintFrames[i].translateX(-40 + 8.75 * (i - 7) + 15 * (i - 15 / 2));
         }
+        getPainting.getData((data)=>{
+            // this.data=data;
+            if(data){
+                let result=JSON.parse(data);
+                let paintings=result.paintings;
+                let a=0;
+                for (let i=0;i<paintings.length;i++){
+                    if (paintings[i].houseId===3&&a<paints.length){
+                        this.data[a]=paintings[i];
+                        let texture=loader.load(paintings[i].paintingPath);
+                        paints[a++].material.map=texture;
+                    }
+                }
+            }
+        });
         for (let i = 0; i < 11; i++) {
             this.paintings[i].setObject(paints[i]);
             this.paintingFrames[i].setObject(paintFrames[i]);
@@ -179,8 +196,25 @@ class RoomTwo extends Component {
             this.use(this.paintings[i]);
             this.use(this.paintingFrames[i]);
         }
+
+        this.$world.addEventListener('click', this.click.bind(this));
     }
 
+    click(){
+
+        for(let value of this.paintings){
+            let intersect = this.$world.controller.getRayCaster().intersectObject(value.getObject());
+            if (intersect.length > 0) {
+                
+                let id=intersect[0].object.id;
+                let first=this.paintings[0].getObject().id;
+
+                id=(id-first)/4;
+                framework.openRoom(this.data[id]);
+              break;
+            }
+        }
+    }
 }
 
 module.exports = RoomTwo;

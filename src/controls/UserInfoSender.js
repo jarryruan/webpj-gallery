@@ -20,6 +20,7 @@ class UserInfoSender extends Component{
 
             config.axiosInstance.get("/api/users/self")
                 .then((resp) => {
+                    
                     if (resp.status === 200) {
                         let response = resp.data;
                         if (response.result) {
@@ -34,6 +35,7 @@ class UserInfoSender extends Component{
                                     y: this.$parent.yawObject.rotation.y,
                                     z: 0
                                 },
+                                paintingId: this.$world.options.paintingId
                             });
                             this.$ui.show(userInfo, "user");
                             this.$parent.active = false;

@@ -1,7 +1,6 @@
 require('../../assets/lib/threebsp');
 const THREE = window.THREE;
 const Component = require("#/system/Component");
-// const floorImg = require("#/assets/textures/room/wallpaper.jpg");
 
 
 const diff = require('#/assets/textures/room/block_diff.jpg');
@@ -27,6 +26,9 @@ const Painting = require('#/environment/hall/Painting');
 const PaintingFrame=require('#/environment/hall/PaintingFrame');
 const RoomLight = require('#/environment/hall/RoomLight');
 
+const getPainting = require("#/environment/hall/GetPainting");
+
+
 class RoomOne extends Component {
     constructor() {
         super();
@@ -46,7 +48,7 @@ class RoomOne extends Component {
         this.doorFrame = new DoorFrame();
         this.paintings = [];
         this.paintingFrames = [];
-
+        this.data=[];
 
         this.addRoof(materials);
 
@@ -55,7 +57,9 @@ class RoomOne extends Component {
         this.addDoor(materials);
 
         this.addPainting();
+
         let group=new THREE.Group(this.wall1,this.wall2,this.wall3,this.wall4,this.roof,this.doorFrame);
+
         group.translateZ(-100);
         group.translateX(100);
         // group.translateY(25);
@@ -109,6 +113,21 @@ class RoomOne extends Component {
             paintFrames[i].translateZ(-39);
             paintFrames[i].translateX(40 - 8.75 * (i - 7) - 15 * (i - 15 / 2));
         }
+        getPainting.getData((data)=>{
+            // this.data=data;
+            if(data){
+                let result=JSON.parse(data);
+                let paintings=result.paintings;
+                let a=0;
+                for (let i=0;i<paintings.length;i++){
+                    if (paintings[i].houseId===2&&a<paints.length){
+                        this.data[a]=paintings[i];
+                        let texture=loader.load(paintings[i].paintingPath);
+                        paints[a++].material.map=texture;
+                    }
+                }
+            }
+        });
         for (let i = 0; i < 11; i++) {
             this.paintings[i].setObject(paints[i]);
             this.paintingFrames[i].setObject(paintFrames[i]);
@@ -156,12 +175,12 @@ class RoomOne extends Component {
         let doors = new THREE.Mesh(door);
         doors.rotation.y = Math.PI / 2;
         doors.translateZ(-40);
-        // doors.translateX(100);
         doors.translateY(10);
         let meshH4Door = new ThreeBSP(doors);
         let meshH4Wall = new ThreeBSP(b);
         let resultBSP = meshH4Wall.subtract(meshH4Door);
         b = resultBSP.toMesh();
+
         b.material = materials;
 
         let d = this.doorFrame.getObject();
@@ -187,8 +206,24 @@ class RoomOne extends Component {
             this.use(this.paintings[i]);
             this.use(this.paintingFrames[i]);
         }
+
+        this.$world.addEventListener('click', this.click.bind(this));
     }
 
+    click(){
+        for(let value of this.paintings){
+            let intersect = this.$world.controller.getRayCaster().intersectObject(value.getObject());
+            if (intersect.length > 0) {
+                
+                let id=intersect[0].object.id;
+                let first=this.paintings[0].getObject().id;
+
+                id=(id-first)/4;
+                framework.openRoom(this.data[id]);
+                break;
+            }
+        }
+    }
 
 }
 

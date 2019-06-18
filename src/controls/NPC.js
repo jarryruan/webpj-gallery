@@ -1,14 +1,62 @@
-const Player = require('./Player');
+const Component = require('#/system/Component');
+const THREE = window.THREE;
 const config = require('#/config');
 
-class NPC extends Player {
-    constructor(paintingId) {
+const Bubble = require('./Bubble');
+
+
+const urls = {
+    greeting: require('#/assets/models/Standing Greeting.fbx')
+}
+
+const animations = {
+    greeting: THREE.asyncLoader.fbx(urls.greeting).then((mesh) => {return mesh.animations[0]}),
+};
+
+
+class NPC extends Component{
+    constructor(paintingId, modelURL = urls.greeting){
         super();
+        this.modelURL = modelURL;
         this.paintingId = paintingId;
     }
 
-    onCreate() {
-        super.onCreate();
+    onCreate(){
+        this.setObject(new THREE.Group());
+        THREE.asyncLoader.fbx(this.modelURL).then(this.meshHandler.bind(this));
+
+        const bubble = this.bubble = new Bubble();
+        this.use(bubble);
+        bubble.setVisible(false);
+        bubble.getObject().position.y = 12;
+    }
+
+    meshHandler(mesh){
+        mesh.scale.multiplyScalar(0.05);
+        mesh.position.set(0, 1, 0);
+        mesh.rotation.y = Math.PI;
+
+        this.mixer = mesh.mixer = new THREE.AnimationMixer(mesh);
+        this.$world.mixers.push(this.mixer);
+        this.getObject().add(mesh);
+
+        this.actions = {};
+        Object.keys(animations).forEach((key) => {
+            this.actions[key] = animations[key].then((anim) => this.mixer.clipAction(anim));
+        });
+
+        this.playAction('greeting');
+
+    }
+
+    playAction(animKey){
+        this.actions[animKey].then((action) => {action.play()});
+    }
+
+    showBarrage(message, timeout = 5000){
+        this.bubble.setText(message);
+        this.bubble.setVisible(true);
+        setTimeout(() => {this.bubble.setVisible(false)}, timeout);
     }
 
     intro() {
@@ -17,7 +65,7 @@ class NPC extends Player {
                 if (resp.status === 200) {
                     let response = resp.data;
                     if (response.result) {
-                        console.log(response);
+                        
                         let len = response.instruction.length;
                         let i = 0;
                         setInterval(() => {

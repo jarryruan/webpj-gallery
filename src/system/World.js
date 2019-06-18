@@ -25,6 +25,11 @@ class World extends Component{
         });
     }
 
+    onAwake(){
+        super.onAwake();
+        this.$framework.onResize();
+    }
+
 
     setCamera(camera){
         this.camera = camera;
