@@ -26,6 +26,7 @@ class World extends Component{
     }
 
     onAwake(){
+        super.onAwake();
         this.$framework.onResize();
     }
 

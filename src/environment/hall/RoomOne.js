@@ -214,7 +214,7 @@ class RoomOne extends Component {
         for(let value of this.paintings){
             let intersect = this.$world.controller.getRayCaster().intersectObject(value.getObject());
             if (intersect.length > 0) {
-                console.log(intersect);
+                
                 let id=intersect[0].object.id;
                 let first=this.paintings[0].getObject().id;
 

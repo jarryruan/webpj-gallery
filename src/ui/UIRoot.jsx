@@ -118,7 +118,7 @@ class UIRoot extends React.Component{
             };
 
             config.axiosInstance.post(`/api/paintings/${this.state.userInfo.paintingId}/comments`, commentOptions).then((resp) => {
-                console.log(resp);
+
                 if (resp.status === 200) {
                     let response = resp.data;
                     if (response.result) {
@@ -157,8 +157,9 @@ class UIRoot extends React.Component{
     handleBack(e) {
         e.preventDefault();
 
+        
         window.framework.view("hall");
-        this.hide();
+        
         this.$framework.getWorld().controller.lock();
         this.$framework._dom.focus();
     }

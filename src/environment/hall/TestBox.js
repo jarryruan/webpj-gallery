@@ -21,11 +21,9 @@ class TestBox extends Component{
 
     onSuspend() {
         super.onSuspend();
-        console.log("TestBox: onSuspend 被调用，进入睡眠状态");
     }
     onAwake() {
         super.onAwake();
-        console.log("TestBox: onAwake 被调用，从睡眠中恢复");
     }
 }
 

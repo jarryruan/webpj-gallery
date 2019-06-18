@@ -20,7 +20,7 @@ class UserInfoSender extends Component{
 
             config.axiosInstance.get("/api/users/self")
                 .then((resp) => {
-                    // console.log(resp);
+                    
                     if (resp.status === 200) {
                         let response = resp.data;
                         if (response.result) {

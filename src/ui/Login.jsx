@@ -71,7 +71,6 @@ class Login extends React.Component {
     handleLogin() {
         let pass = Object.keys(this.rules).every((key) => (this.rules[key](key)));
         if (pass) {
-            // console.log(this.state.form);
             config.axiosInstance.post(
                 "/api/users/self", {
                     username: this.state.form.username,
