@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     entry: path.resolve(__dirname, "src/main.js"),
     output: {
+        publicPath: '/gallery',
         path: path.resolve(__dirname, "dist"),
         filename: "bundle.js"
     },
@@ -16,7 +17,7 @@ module.exports = {
         hot: true,
         proxy: {
             '/server': {
-                target: 'http://188.131.187.85:9999',
+                target: 'http://47.102.212.146:8080',
                 pathRewrite: {'^/server': ''}
             }
         }

@@ -29,7 +29,7 @@ module.exports = {
 
     server:{
         domain: domain,
-        root: 'ws://' + domain + ':3000/'
+        root: 'ws://' + domain + ':3004/'
     },
 
     axiosInstance: axios.create({
