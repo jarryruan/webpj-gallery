@@ -7,6 +7,26 @@
 
 
 ## 项目部署与运行
+安装项目依赖
+```
+npm install
+```
+
+以docker方式启动
+```
+docker-compose up
+```
+
+以docker后台方式启动
+```
+docker-compose up -d
+```
+
+终止docker容器
+```
+docker-compose down
+```
+
 
 编译前端静态文件(webpack)
 ```
