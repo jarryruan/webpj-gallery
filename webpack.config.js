@@ -4,8 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     entry: path.resolve(__dirname, "src/main.js"),
     output: {
-        publicPath: '/gallery/',
-        path: path.resolve(__dirname, "dist"),
+        // publicPath: '/gallery/',
+        path: path.resolve(__dirname, "docker/nginx/dist"),
         filename: "bundle.js"
     },
 

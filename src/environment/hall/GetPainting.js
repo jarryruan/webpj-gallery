@@ -9,9 +9,9 @@ const config = require('#/config');
 
 function getData(callback) {
     let options = {
-        host: "47.102.212.146",
-        port: 8080,
-        path: '/api/paintings',
+        host: config.server.domain,
+        port: 80,
+        path: '/server/api/paintings',
         method: 'GET'
     };
     let req = http.request(options, function (res) {

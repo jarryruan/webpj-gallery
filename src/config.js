@@ -29,11 +29,11 @@ module.exports = {
 
     server:{
         domain: domain,
-        root: 'ws://' + domain + ':3004/'
+        root: 'ws://' + domain + ':3000/'
     },
 
     axiosInstance: axios.create({
-        baseURL: "http://47.102.212.146:8080/",
+        baseURL: "/server",
         timeout: 5000,
         withCredentials: true // 允许携带cookie
     }),
